@@ -1,8 +1,16 @@
-main: grid agent case
-	g++ main.cpp grid.o case.o agent.o -o exec
-grid:
-	g++ grid.cpp -c
-agent:
-	g++ agent.cpp -c
-case:
-	g++ case.cpp -c
+GPP = g++
+SRC = agent.cpp batiment.cpp case.cpp main.cpp
+OBJ = $(SRC:%.cc=%.o)
+EXE = exe
+
+all: $(OBJ)
+	$(GPP) -o $(EXE) $(OBJ)
+	rm -f *~ *.o
+	@echo "$(EXE) prêt!"
+
+%.o: %.cpp
+	$(GPP) -c $<
+
+clean:
+	rm -f $(EXE)
+	@echo "$(EXE) effacé !"
