@@ -13,5 +13,5 @@ all: $(OBJ)
 	
 
 clean:
-	rm -f $(EXE)
-	@echo "$(EXE) effacé !"
+	rm -f $(EXE) *.o
+	@echo "$(EXE) et *.o effacé !"

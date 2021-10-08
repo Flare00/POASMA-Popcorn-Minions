@@ -2,26 +2,28 @@
 #define BATIMENT_H
 
 #include "case.h"
+#include "stateEnum.h"
 
 class Batiment
 {
 private:
 	int width;
 	int height;
-
-	Case** grid;
+	int start_nbminion, start_nbfire;
+	int nb_exits;
+	Case*** grid;
 
 public:
-	Batiment(int x, int y);
+	Batiment(int x, int y, int start_nbminion, int start_nbfire, int nb_exits ,int nb_wall);
 	~Batiment();
 
-	bool fire(int x, int y);    //is there fire in (x,y)
-	int* getExitDoors(); //fill the tab "tab" and set n to the number of exit
+	Case** getExitDoors(); //Return all exit cases;
 
-
-	bool flamable(int x, int y);
+	StateEnum getState(int x, int y);
 	Case* getCase(int x, int y);
-	Case** getGrid();
+	Case*** getGrid();
+	int getWidth();
+	int getHeight();
 
 };
 

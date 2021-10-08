@@ -1,7 +1,8 @@
 #ifndef MINION_H
 #define MINION_H
 
-class Minion{
+#include "agent.h"
+class Minion : Agent{
 private:
 	bool alive = true;
 	bool escape = false;
