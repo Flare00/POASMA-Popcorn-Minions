@@ -1,15 +1,16 @@
 GPP = g++
-SRC = agent.cpp batiment.cpp case.cpp fire.cpp minion.cpp main.cpp
-OBJ = $(./src/SRC:%.cpp=%.o)
+SRC = $(wildcard src/*.cpp)
+OBJ = $(SRC:.cpp=.o)
 EXE = exe
 
 all: $(OBJ)
-	$(GPP) -o $(EXE) $(OBJ)
+	$(GPP) -iquote header -o $(EXE) main.cpp $(wildcard *.o)
 	rm *.o
 	@echo "$(EXE) prêt!"
 
 %.o: %.cpp
-	$(GPP) -c $<
+	$(GPP) -iquote header -c $<
+	
 
 clean:
 	rm -f $(EXE)

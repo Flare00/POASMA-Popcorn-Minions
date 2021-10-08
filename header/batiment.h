@@ -16,7 +16,7 @@ public:
 	~Batiment();
 
 	bool fire(int x, int y);    //is there fire in (x,y)
-	void getExits(int* tab, int* n); //fill the tab "tab" and set n to the number of exit
+	int* getExitDoors(); //fill the tab "tab" and set n to the number of exit
 
 
 	bool flamable(int x, int y);

@@ -9,6 +9,8 @@ private :
 	StateEnum state;
 	Agent agent;
 public :
+	Case();
+	~Case();
 	StateEnum getState();
 	void setState(StateEnum state);
 	Agent getAgent();
