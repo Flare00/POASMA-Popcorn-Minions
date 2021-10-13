@@ -16,5 +16,5 @@ void Minion::panik(){
 	
 }
 void Minion::popcorn(){
-	
+	delete this;
 }
