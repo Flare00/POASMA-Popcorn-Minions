@@ -1,3 +1,7 @@
+#include "Vec3.h"
+#include "Camera.h"
+#include "batiment.h"
+
 #define NOTHING 0
 #define WALL 1
 #define MINION 2
@@ -43,24 +47,33 @@ void drawWall(float x, float y,float tilesize,int zindex){
 }
 void drawFire(float x, float y,float tilesize,int zindex){
 	glColor3f(1.,0.,0.);
-	glBegin(GL_QUADS);
 
-	drawQuad(x+tilesize/4,
-	y+tilesize/4,
-	x+tilesize/4*3,
-	y+tilesize/4*3,1);
+	glBegin(GL_TRIANGLE_FAN);
+	glVertex3f(x+tilesize/2,y+tilesize/2,zindex*-0.001);
+	for (int i = 0 ; i <= 20 ; i += 1){
+		double ang = i*(1.0/20)*TWO_PI;
+		double rad = (i%2==0) ? tilesize/2 : tilesize/4;
+	    glVertex3f(x+tilesize/2+rad*cos(ang),y+tilesize/2+rad*sin(ang),zindex*-0.001);
+	}
 	glEnd();
 }
 void drawMinion(float x, float y,float tilesize,int zindex){
 	glColor3f(1.,1.,0.);
-	glBegin(GL_QUADS);
 
-	glVertex3f(x+tilesize/4,y+tilesize/4,zindex*-0.001);
-    glVertex3f(x+tilesize/4*3,y+tilesize/4,zindex*-0.001);
-    glVertex3f(x+tilesize/4*3,y+tilesize/4*3,zindex*-0.001);
-    glVertex3f(x+tilesize/4,y+tilesize/4*3,zindex*-0.001);
-
+	glBegin(GL_POLYGON);
+	for (double angle = 0 ; angle < TWO_PI ; angle += PI/8){
+	    glVertex3f(x+tilesize/2+tilesize/2*cos(angle),y+tilesize/2+tilesize/2*sin(angle),zindex*-0.001);
+	}
 	glEnd();
+
+	glColor3f(0.,0.,0.);
+	glBegin(GL_LINES);
+	for (double angle = 0 ; angle < TWO_PI ; angle += PI/4){
+	    glVertex3f(x+tilesize/2,y+tilesize/2,(zindex-1)*-0.001);
+	    glVertex3f(x+tilesize/2+tilesize/4*cos(angle),y+tilesize/2+tilesize/4*sin(angle),(zindex-1)*-0.001);
+	}
+	glEnd();
+
 }
 void drawExit(float x, float y,float tilesize,int zindex){
 	glColor3f(0.1,1,0.05);
@@ -73,7 +86,10 @@ void drawExit(float x, float y,float tilesize,int zindex){
 	glEnd();
 }
 
-void drawGrid(int** grid, int width, int height){
+void drawGrid(Batiment * batiment){
+
+	int width = batiment->getWidth();
+	int height = batiment->getHeight();
 
 	float tilesize = 2.0 /(std::max(width,height));
 	//std::cout<<tilesize<<std::endl;
@@ -114,20 +130,20 @@ void drawGrid(int** grid, int width, int height){
 
 			//std::cout<<"x="<<x<<" y="<<y<<std::endl;
 
-			int type = grid[x][y];
+			StateEnum type = batiment->getState(x,y);
 
 			switch ( type )
 			{
-				case WALL:
+				case StateEnum::wall:
 					drawWall(xpos,ypos,tilesize,1);
 					break;
-				case MINION:
+				case StateEnum::minion:
 					drawMinion(xpos,ypos,tilesize,1);
 					break;
-				case FIRE:
+				case StateEnum::flame:
 					drawFire(xpos,ypos,tilesize,1);
 					break;
-				case EXIT:
+				case StateEnum::exitDoor:
 					drawExit(xpos,ypos,tilesize,1);
 					break;
 					

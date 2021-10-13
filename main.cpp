@@ -15,12 +15,12 @@
 #include "header/Drawgrid.h"
 #include "header/batiment.h"
 
-#define PI 3.141592653589793238462643383
-#define TWO_PI 6.283185307179586
 
 #define WIDTH 20
 #define HEIGHT 20
 using namespace std;
+
+Batiment* bat;
 
 static GLint window;
 static unsigned int SCREENWIDTH = 1600;
@@ -60,7 +60,7 @@ void init() {
 }
 
 void draw() {
-    drawGrid(grid, WIDTH, HEIGHT);
+    drawGrid(bat);
 }
 
 
@@ -141,7 +141,7 @@ void reshape(int w, int h) {
     camera.resize(w, h);
 }
 
-int main(){
+int main(int argc,char** argv){
     if (argc > 2) {
         exit(EXIT_FAILURE);
     }
@@ -150,7 +150,7 @@ int main(){
     glutInitWindowSize(SCREENWIDTH, SCREENHEIGHT);
     window = glutCreateWindow("Popcorn Minions");
 
-    grid = initGrid(WIDTH, HEIGHT);
+    bat = new Batiment(10, 10, 1, 1, 1 ,10);
 
     init();
     glutIdleFunc(idle);
@@ -162,9 +162,7 @@ int main(){
     key('?', 0, 0);
 
     glutMainLoop();
+    delete bat;
     return EXIT_SUCCESS;
-
-	//Batiment * bat = new Batiment(10, 10, 1, 1, 1 ,10);
-	//delete bat;
 }
 
