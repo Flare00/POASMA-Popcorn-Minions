@@ -1,6 +1,7 @@
 #include "batiment.h"
 #include "fire.h"
 #include "stateEnum.h"
+#include "minion.h"
 
 #include <stdio.h>
 #include <stdlib.h>
