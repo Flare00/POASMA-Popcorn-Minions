@@ -47,7 +47,7 @@
 			int j = rand()%y;
 			if(grid[i][j]->getState() == StateEnum::empty){
 				grid[i][j]->setState( StateEnum::minion);
-				grid[i][j]->setAgent(new Minion(i,j));
+				grid[i][j]->setAgent((Agent*)new Minion(i,j));
 				putted++;
 			}
 		}
@@ -129,7 +129,7 @@
 		for (int i = 0; i < size; i++) {
 			minions[i]->action(this);
 		}
-		size_t size = fires.size();
+		size = fires.size();
 		for (int i = 0; i < size; i++) {
 			fires[i]->action(this);
 		}
