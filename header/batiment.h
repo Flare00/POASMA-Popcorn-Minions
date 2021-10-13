@@ -24,7 +24,7 @@ public:
 	Case*** getGrid();
 	int getWidth();
 	int getHeight();
-
+	void doAction();
 };
 
 #endif

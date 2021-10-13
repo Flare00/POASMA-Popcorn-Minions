@@ -19,6 +19,6 @@ int Agent::getY(){
 void Agent::setX(int x){
 	this->pos_x = x;
 }
-void Agent::setY(int y){
+void Agent::setY(int y) {
 	this->pos_y = y;
 }

@@ -1,11 +1,13 @@
 #include "batiment.h"
 #include "fire.h"
 #include "stateEnum.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstddef>
 #include <time.h>
 #include <ostream>
+#include <vector>
 	Batiment::Batiment(int x, int y, int start_nbminion, int start_nbfire, int nb_exits, int nb_wall){
 		this->start_nbminion = start_nbminion;
 		this->start_nbfire = start_nbfire;
@@ -67,9 +69,6 @@
 	Batiment::~Batiment(){
 		for(int i = 0; i < this->width; i++){
 			for(int j = 0; j < this->height; j++){
-				if(grid[i][j]->getAgent() != NULL){
-					delete grid[i][j]->getAgent();
-				}
 				delete grid[i][j];
 			}
 			delete grid[i];
@@ -106,4 +105,32 @@
 	}
 	int Batiment::getHeight(){
 		return this->height;
+	}
+
+	void Batiment::doAction()
+	{
+		std::vector<Agent*> minions;
+		std::vector<Agent*> fires;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				Agent* agent = this->grid[x][y]->getAgent();
+				if (agent != NULL) {
+					if (this->grid[x][y]->getState() == StateEnum::minion) {
+						minions.push_back(agent);
+					}
+					else if (this->grid[x][y]->getState() == StateEnum::flame){
+						fires.push_back(agent);
+					}
+				}
+			}
+		}
+
+		size_t size = minions.size();
+		for (int i = 0; i < size; i++) {
+			minions[i]->action();
+		}
+		size_t size = fires.size();
+		for (int i = 0; i < size; i++) {
+			fires[i]->action();
+		}
 	}

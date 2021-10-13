@@ -17,7 +17,7 @@ public:
 	void setY(int y);
 
 	
-	virtual void action(Batiment* batiment);
+	virtual void action(Batiment* batiment) = 0;
 };
 
 #endif

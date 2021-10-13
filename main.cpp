@@ -1,38 +1,170 @@
-#include "batiment.h"
-
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <cstdio>
+#include <cstdlib>
+#include <GL/glut.h>
+#include <float.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
 
+#include "header/Vec3.h"
+#include "header/Camera.h"
+#include "header/Drawgrid.h"
+#include "header/batiment.h"
+
+#define PI 3.1415926535897932384626433
+#define TWO_PI 6.283185307179586
+
+#define WIDTH 20
+#define HEIGHT 20
 using namespace std;
 
+static GLint window;
+static unsigned int SCREENWIDTH = 1600;
+static unsigned int SCREENHEIGHT = 900;
+static Camera camera;
+static bool mouseRotatePressed = false;
+static bool mouseMovePressed = false;
+static bool mouseZoomPressed = false;
+static int lastX = 0, lastY = 0, lastZoom = 0;
+
+void initLight() {
+	GLfloat light_position1[4] = { 22.0f, 16.0f, 50.0f, 0.0f };
+	GLfloat direction1[3] = { -52.0f,-16.0f,-50.0f };
+	GLfloat color1[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat ambient[4] = { 0.3f, 0.3f, 0.3f, 0.5f };
+
+	glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction1);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, color1);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, color1);
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
+	glEnable(GL_LIGHT1);
+	glEnable(GL_LIGHTING);
+}
+
+void init() {
+	camera.resize(SCREENWIDTH, SCREENHEIGHT);
+	initLight();
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glDepthFunc(GL_LESS);
+	glEnable(GL_DEPTH_TEST);
+	glClearColor(0.2f, 0.2f, 0.3f, 1.0f);
+	glEnable(GL_COLOR_MATERIAL);
+
+	//glDisable(GL_CULL_FACE);
+}
+
+void draw() {
+    drawGrid(grid, WIDTH, HEIGHT);
+}
+
+
+void display() {
+    glLoadIdentity();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    camera.apply();
+    draw();
+    glFlush();
+    glutSwapBuffers();
+}
+
+void idle() {
+    glutPostRedisplay();
+}
+
+void key(unsigned char keyPressed, int x, int y) {
+    switch (keyPressed) {
+    case '1': //Je garde ça au cas où...
+        //do stuff
+        break;
+
+    default:
+        break;
+    }
+    idle();
+}
+
+void mouse(int button, int state, int x, int y) {
+    if (state == GLUT_UP) {
+        mouseMovePressed = false;
+        mouseRotatePressed = false;
+        mouseZoomPressed = false;
+    }
+    else {
+        if (button == GLUT_LEFT_BUTTON) {
+            camera.beginRotate(x, y);
+            mouseMovePressed = false;
+            mouseRotatePressed = true;
+            mouseZoomPressed = false;
+        }
+        else if (button == GLUT_RIGHT_BUTTON) {
+            lastX = x;
+            lastY = y;
+            mouseMovePressed = true;
+            mouseRotatePressed = false;
+            mouseZoomPressed = false;
+        }
+        else if (button == GLUT_MIDDLE_BUTTON) {
+            if (mouseZoomPressed == false) {
+                lastZoom = y;
+                mouseMovePressed = false;
+                mouseRotatePressed = false;
+                mouseZoomPressed = true;
+            }
+        }
+    }
+    idle();
+}
+
+void motion(int x, int y) {
+    if (mouseRotatePressed == true) {
+        camera.rotate(x, y);
+    }
+    else if (mouseMovePressed == true) {
+        camera.move((x - lastX) / static_cast<float>(SCREENWIDTH), (lastY - y) / static_cast<float>(SCREENHEIGHT), 0.0);
+        lastX = x;
+        lastY = y;
+    }
+    else if (mouseZoomPressed == true) {
+        camera.zoom(float(y - lastZoom) / SCREENHEIGHT);
+        lastZoom = y;
+    }
+}
+
+
+void reshape(int w, int h) {
+    camera.resize(w, h);
+}
+
 int main(){
-	Batiment * bat = new Batiment(10, 10, 1, 1, 1 ,10);
-	cout << "o : minions - | : murs - f : feu - e : sortie";
-	for(int j = 0; j < bat->getHeight(); j++){
-		cout << endl << " ";
-		for(int i = 0; i < bat->getWidth(); i++){
-			switch(bat->getState(i,j)){
-				case StateEnum::minion :
-					cout << "o ";
-					break;
-				case StateEnum::wall :
-					cout << "| ";
-					break;
-				case StateEnum::flame :
-					cout << "f ";
-					break;
-				case StateEnum::exitDoor :
-					cout << "e ";
-					break;
-				case StateEnum::empty :
-					cout << "  ";
-					break;
-			}
-		}
-	}
-	cout << std::endl;
-	delete bat;
-	return 0;
+    if (argc > 2) {
+        exit(EXIT_FAILURE);
+    }
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+    glutInitWindowSize(SCREENWIDTH, SCREENHEIGHT);
+    window = glutCreateWindow("Popcorn Minions");
+
+    grid = initGrid(WIDTH, HEIGHT);
+
+    init();
+    glutIdleFunc(idle);
+    glutDisplayFunc(display);
+    glutKeyboardFunc(key);
+    glutReshapeFunc(reshape);
+    glutMotionFunc(motion);
+    glutMouseFunc(mouse);
+    key('?', 0, 0);
+
+    glutMainLoop();
+    return EXIT_SUCCESS;
+
+	//Batiment * bat = new Batiment(10, 10, 1, 1, 1 ,10);
+	//delete bat;
 }
 

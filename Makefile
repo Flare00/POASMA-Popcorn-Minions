@@ -4,14 +4,14 @@ OBJ = $(SRC:.cpp=.o)
 EXE = exe
 
 all: $(OBJ)
-	$(GPP) -iquote header -o $(EXE) main.cpp $(wildcard *.o)
-	rm *.o
+	$(GPP) -iquote header -o $(EXE) main.cpp $(OBJ)
+	rm src/*.o
 	@echo "$(EXE) prêt!"
 
 %.o: %.cpp
-	$(GPP) -iquote header -c $<
+	$(GPP) -iquote header -c $< -o $@
 	
 
 clean:
-	rm -f $(EXE) *.o
+	rm -f $(EXE) src/*.o
 	@echo "$(EXE) et *.o effacé !"

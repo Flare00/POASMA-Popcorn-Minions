@@ -1,11 +1,19 @@
 #include "case.h"
 #include "stateEnum.h"
 #include "agent.h"
-
+#include <cstddef>
 Case::Case(int x, int y){
 	this->state = StateEnum::empty;
+	this->agent = NULL;
 	this->pos_x = x;
 	this->pos_y = y;
+}
+
+Case::~Case()
+{
+	if (this->agent != NULL) {
+		delete this->agent;
+	}
 }
 
 StateEnum Case::getState(){
