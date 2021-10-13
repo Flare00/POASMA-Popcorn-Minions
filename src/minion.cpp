@@ -4,7 +4,7 @@ Minion::Minion(int x, int y){
 	this->pos_y = y;
 }
 void Minion::action(Batiment* batiment){
-
+	
 }
 void Minion::move(int x, int y){
 	

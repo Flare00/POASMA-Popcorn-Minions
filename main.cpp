@@ -9,6 +9,7 @@
 #include <float.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <chrono>
 
 #include "header/Vec3.h"
 #include "header/Camera.h"
@@ -19,6 +20,10 @@
 #define WIDTH 20
 #define HEIGHT 20
 using namespace std;
+
+chrono::high_resolution_clock::time_point last = chrono::high_resolution_clock::now();
+
+long int nextUpdate = 0;
 
 Batiment* bat;
 
@@ -56,10 +61,16 @@ void init() {
 	glClearColor(0.2f, 0.2f, 0.3f, 1.0f);
 	glEnable(GL_COLOR_MATERIAL);
 
-	//glDisable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 }
 
 void draw() {
+    long long int duration = (chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now()-last)).count(); 
+
+    if(duration>= 10){
+        last = chrono::high_resolution_clock::now();
+        bat->doAction();
+    }
     drawGrid(bat);
 }
 
@@ -142,6 +153,7 @@ void reshape(int w, int h) {
 }
 
 int main(int argc,char** argv){
+    srand(time(NULL));
     if (argc > 2) {
         exit(EXIT_FAILURE);
     }

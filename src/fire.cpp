@@ -10,7 +10,6 @@ Fire::Fire(int x, int y){
 	this->pos_y = y;
 }
 void Fire::action(Batiment * batiment){
-	srand(time(NULL));
 	if (rand() % PROPAGATION_CHANCE == 0) {
 		this->propagate(batiment->getCase(this->getX() - 1, this->getY()));
 	}

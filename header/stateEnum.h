@@ -6,7 +6,8 @@ enum StateEnum{
 	wall,
 	flame,
 	minion,
-	exitDoor
+	exitDoor,
+	popCorn
 };
 
 #endif
