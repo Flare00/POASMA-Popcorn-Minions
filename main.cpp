@@ -15,7 +15,7 @@
 #include "header/Drawgrid.h"
 #include "header/batiment.h"
 
-#define PI 3.1415926535897932384626433
+#define PI 3.141592653589793238462643383
 #define TWO_PI 6.283185307179586
 
 #define WIDTH 20
