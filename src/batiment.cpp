@@ -94,7 +94,8 @@
 	}
 
 	Case* Batiment::getCase(int x, int y){
-		return this->grid[x][y];
+
+		return (x >= 0 && x < width && y >= 0 && y < height) ? this->grid[x][y] : NULL;
 	}
 	Case*** Batiment::getGrid(){
 		return this->grid;
