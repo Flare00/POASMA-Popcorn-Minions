@@ -29,6 +29,7 @@ Minion::Minion(int x, int y){
 	this->pos_y = y;
 }
 void Minion::action(Batiment* batiment){
+	Case* emplacement = batiment->getCase(this->getX(), this->getY());
 /*	StateEnum type = batiment->getState(x,y);
 
 			switch ( type )
@@ -50,8 +51,23 @@ void Minion::action(Batiment* batiment){
 
 	//Case** Batiment::getExitDoors(){
 	//int Case::getX(){
+	int x = this->getX();
+	int y = this->getY();
 
-	//Case ** exitDoors = batiment.getExitDoors();
+
+	Case** exitDoors = batiment->getExitDoors();
+	Case* closestExit = exitDoors[0];
+
+	
+	for (int i = 0; i < 1; ++i) // TODO je sais pas comment connaitre la taille du tableau ?
+	{
+		if(Case::distaceHamilton(exitDoors[i],emplacement)<Case::distaceHamilton(closestExit,emplacement)){
+			closestExit = exitDoors[i];
+		}
+	}
+
+	this->moveToward(batiment, closestExit);
+
 
 }
 void Minion::move(Batiment* batiment, int deltaX, int deltaY){
@@ -66,6 +82,7 @@ void Minion::move(Batiment* batiment, int deltaX, int deltaY){
 				this->setY(this->getY() + deltaY);
 				currentCase->setState(StateEnum::empty);
 				currentCase->setAgent(NULL);
+				break;
 			case StateEnum::flame :
 				emplacement->setState(StateEnum::popCorn);
 				delete emplacement->getAgent();
@@ -81,6 +98,27 @@ void Minion::move(Batiment* batiment, int deltaX, int deltaY){
 		}
 	}
 }
+
+void Minion::moveToward(Batiment* batiment, Case * c){
+	int dx = 0;
+	int dy = 0;
+
+	if(c->getX()>this->getX()){
+		dx = 1;
+	}else if(c->getX()<this->getX()){
+		dx = -1;
+	}
+
+	if(c->getY()>this->getY()){
+		dy = 1;
+	}else if(c->getY()<this->getY()){
+		dy = -1;
+	}
+	cout<<"dx :"<<dx<<" dy : "<<dy<<endl;
+	this->move(batiment, dx, dy);
+}
+
+
 void Minion::idle(){
 	
 }

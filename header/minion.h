@@ -10,6 +10,7 @@ public:
 	Minion(int x, int y);
 	virtual void action(Batiment* batiment);
 	void move(Batiment* batiment, int deltaX, int deltaY);
+	void moveToward(Batiment* batiment, Case * c);
 	void idle();
 	void panik(Batiment* batiment);
 	void popcorn();

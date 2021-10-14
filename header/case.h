@@ -20,6 +20,8 @@ public :
 	void setState(StateEnum state);
 	Agent* getAgent();
 	void setAgent(Agent* agent);
+
+	static int distaceHamilton(Case* c1,Case* c2);
 };
 
 #endif

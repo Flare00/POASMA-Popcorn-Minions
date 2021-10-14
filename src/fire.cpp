@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <stdlib.h>
 #include <time.h>
-#define PROPAGATION_CHANCE 100
+#define PROPAGATION_CHANCE 3
 Fire::Fire(int x, int y){
 	this->pos_x = x;
 	this->pos_y = y;

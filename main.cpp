@@ -1,4 +1,3 @@
-#ifndef includes
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -13,14 +12,6 @@
 #include <chrono>
 #include <cstddef>
 #include <ctime>
-
-#include "batiment.h"
-#include "fire.h"
-#include "stateEnum.h"
-#include "minion.h"
-#include "case.h"
-
-#endif
 
 #include "header/Vec3.h"
 #include "header/Camera.h"
@@ -75,7 +66,7 @@ void init() {
 void draw() {
     long long int duration = (chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now()-last)).count(); 
 
-    if(duration>= 10){
+    if(duration>= 1000){
         last = chrono::high_resolution_clock::now();
         bat->doAction();
     }
@@ -170,7 +161,7 @@ int main(int argc,char** argv){
     glutInitWindowSize(SCREENWIDTH, SCREENHEIGHT);
     window = glutCreateWindow("Popcorn Minions");
 
-    bat = new Batiment(100, 100, 1, 1, 1 ,10);
+    bat = new Batiment(20, 20, 1, 1, 1 ,10);
 
     init();
     glutIdleFunc(idle);
