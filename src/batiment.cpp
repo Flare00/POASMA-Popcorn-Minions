@@ -1,7 +1,12 @@
+#ifndef includes
+
 #include "batiment.h"
 #include "fire.h"
 #include "stateEnum.h"
 #include "minion.h"
+#include "case.h"
+
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>

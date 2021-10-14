@@ -1,3 +1,4 @@
+#ifndef includes
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -10,15 +11,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <chrono>
+#include <cstddef>
+#include <ctime>
+
+#include "batiment.h"
+#include "fire.h"
+#include "stateEnum.h"
+#include "minion.h"
+#include "case.h"
+
+#endif
 
 #include "header/Vec3.h"
 #include "header/Camera.h"
 #include "header/Drawgrid.h"
 #include "header/batiment.h"
 
-
-#define WIDTH 20
-#define HEIGHT 20
 using namespace std;
 
 chrono::high_resolution_clock::time_point last = chrono::high_resolution_clock::now();
@@ -162,7 +170,7 @@ int main(int argc,char** argv){
     glutInitWindowSize(SCREENWIDTH, SCREENHEIGHT);
     window = glutCreateWindow("Popcorn Minions");
 
-    bat = new Batiment(10, 10, 1, 1, 1 ,10);
+    bat = new Batiment(100, 100, 1, 1, 1 ,10);
 
     init();
     glutIdleFunc(idle);
