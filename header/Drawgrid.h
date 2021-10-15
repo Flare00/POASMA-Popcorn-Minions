@@ -1,6 +1,7 @@
 #include "Vec3.h"
 #include "Camera.h"
 #include "batiment.h"
+#include "PerlinNoise.h"
 
 #define NOTHING 0
 #define WALL 1
@@ -86,6 +87,38 @@ void drawExit(float x, float y,float tilesize,int zindex){
 	glEnd();
 }
 
+void drawPopcorn(float x, float y,float tilesize,int zindex){
+	PerlinNoise pn;
+
+
+
+	double rad = tilesize/2;
+
+	glColor3f(1.,1.,1.);
+	glBegin(GL_POLYGON);
+	glVertex3f(x+tilesize/2,y+tilesize/2,zindex*-0.001);
+	int pas = 100;
+	for (int i = 0 ; i <= pas ; i += 1){
+		double ang = i*(1.0/pas)*TWO_PI;
+		double rad = pn.noise(cos(ang)+10*x, sin(ang)+10*y,x*20+y)*(tilesize);
+
+	    glVertex3f(x+tilesize/2+rad*cos(ang),y+tilesize/2+rad*sin(ang),zindex*-0.001);
+	}
+	glEnd();
+
+
+	glColor3f(0.3,0.3,0.3);
+	glBegin(GL_LINE_STRIP);
+	for (int i = 0 ; i <= pas ; i += 1){
+		double ang = i*(1.0/pas)*TWO_PI;
+		double rad = pn.noise(cos(ang)+10*x, sin(ang)+10*y,x*20+y)*(tilesize);
+
+	    glVertex3f(x+tilesize/2+rad*cos(ang),y+tilesize/2+rad*sin(ang),(zindex-1)*-0.001);
+	}
+	glEnd();
+
+}
+
 void drawGrid(Batiment * batiment){
 
 	int width = batiment->getWidth();
@@ -127,9 +160,6 @@ void drawGrid(Batiment * batiment){
 			float xpos = -gridWidth/2 + x*tilesize;
 			float ypos = -gridHeight/2 + y*tilesize;
 
-
-			//std::cout<<"x="<<x<<" y="<<y<<std::endl;
-
 			StateEnum type = batiment->getState(x,y);
 
 			switch ( type )
@@ -145,6 +175,9 @@ void drawGrid(Batiment * batiment){
 					break;
 				case StateEnum::exitDoor:
 					drawExit(xpos,ypos,tilesize,1);
+					break;
+				case StateEnum::popCorn:
+					drawPopcorn(xpos,ypos,tilesize,1);
 					break;
 					
 			}
