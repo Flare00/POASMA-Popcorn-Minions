@@ -21,6 +21,7 @@
 			grid[i] = new Case*[this->height];
 			for(int j = 0; j < this->height;j++){
 				grid[i][j] = new Case(i,j);
+				grid[i][j]->setState(StateEnum::empty);
 			}
 		}
 		srand(time(NULL));

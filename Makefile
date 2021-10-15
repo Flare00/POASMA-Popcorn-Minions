@@ -1,4 +1,4 @@
-GPP = g++
+GPP = g++ -g
 SRC = $(wildcard src/*.cpp)
 OBJ = $(SRC:.cpp=.o)
 EXE = exe

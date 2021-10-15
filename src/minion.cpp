@@ -14,23 +14,54 @@ void Minion::action(Batiment* batiment){
 	int y = this->getY();
 
 
-	Case** exitDoors = batiment->getExitDoors();
-	Case* closestExit = exitDoors[0];
+		Case** exitDoors = batiment->getExitDoors();
+		Case*** grid = batiment->getGrid();
+		Case* closestExit = exitDoors[0];
 
-	// TODO je sais pas comment connaitre la taille du tableau ?
-	for (int i = 0; i < 1; ++i) 
-	{
-		if(Case::distaceHamilton(exitDoors[i],emplacement)<Case::distaceHamilton(closestExit,emplacement)){
-			closestExit = exitDoors[i];
+		// TODO je sais pas comment connaitre la taille du tableau ?
+		for (int i = 0; i < 1; ++i) 
+		{
+			if(Case::distaceHamilton(exitDoors[i],emplacement)<Case::distaceHamilton(closestExit,emplacement)){
+				closestExit = exitDoors[i];
+			}
 		}
-	}
 
-	this->moveToward(batiment, closestExit);
-	vector<Case *> path;
-	current->setX(x);
-	current->setY(y);
-	path = aStar(batiment,this->current,this->current,batiment->getGrid());
-	printPath(path);
+		vector<Case *> path;
+		path.clear();
+
+
+		std::cout<<"Départ:"<<x<<" "<<y<<std::endl;
+		std::cout<<"Arrivée:"<<closestExit->getX()<<" "<<closestExit->getY()<<std::endl;
+		
+
+		path = aStar(batiment,emplacement,closestExit);
+		printPath(path);
+
+		if(path.size()>1)
+		{
+
+			path.pop_back(); // La case du minion
+			Case * to = path.back(); // Le prochain déplacement
+
+			for(int i = 0; i < batiment->getWidth() ; i++)
+				for(int j = 0; j < batiment->getHeight() ; j++)
+				{
+					grid[i][j]->setVisited(false);
+					grid[i][j]->setParent(NULL);
+					grid[i][j]->setF(0);
+					grid[i][j]->setG(0);
+					grid[i][j]->setH(0);
+				}
+			this->move(batiment, to->getX(),to->getY());
+		}
+		else
+		{
+			this->move(batiment, closestExit->getX(),closestExit->getY());
+			exit(0); // On sort quand il trouve la sortie
+		}
+		
+		
+	
 }
 void Minion::setCaseCurrent(Case * c)
 {
@@ -46,6 +77,8 @@ int Minion::calculeHValue(Case * currentCase, Case* goal)
 }
 Case* Minion::chooseBestCase(vector<Case *> openList)
 {
+
+
 	Case * best = openList.front();
 	for(size_t i = 0 ; i < openList.size() ; i++)
 	{
@@ -58,17 +91,16 @@ Case* Minion::chooseBestCase(vector<Case *> openList)
 }
 vector<Case *> Minion::rebuildPath(Case * c)
 {
-	if(c->getParent() != NULL)
+	vector<Case *> p;
+
+	while(c->getParent() != NULL)
 	{
-		vector<Case *> p = rebuildPath(c->getParent());
+		c = c->getParent();
 		c->setVisited(true);
 		p.push_back(c);
-		return p;
+		
 	}
-	else
-		return {};
-
-
+	return p;
 }
 int Minion::getIndice(vector<Case *> list, Case * c)
 {
@@ -82,21 +114,64 @@ int Minion::getIndice(vector<Case *> list, Case * c)
 }
 void Minion::printPath(vector<Case *> list)
 {
-	for(int i = 0 ; i < list.size(); i++)
-		std::cout<<list[i]->getX()<<" "<<list[i]->getY()<<std::endl;
+	if(list.size()>0)
+	{
+		for(int i = 0 ; i < list.size(); i++)
+			std::cout<<list[i]->getX()<<" "<<list[i]->getY()<<std::endl;
+
+	}
+
+}
+bool Minion::checkBoundaries(int x, int y, int width, int height)
+{
+	return x>0&&x<width && y>0&&y<height;
 }
 vector<Case *>  Minion::children(Batiment* b,Case* n){
 	vector<Case *>  voisinNonVerfier;
-	if(b->getCase(n->getX(),n->getY()+1)->getState()==empty) voisinNonVerfier.push_back(b->getCase(n->getX(),n->getY()+1));
-	if(b->getCase(n->getX()+1,n->getY())->getState()==empty) voisinNonVerfier.push_back(b->getCase(n->getX()+1,n->getY()));
-	if(b->getCase(n->getX(),n->getY()-1)->getState()==empty) voisinNonVerfier.push_back(b->getCase(n->getX(),n->getY()-1));
-	if(b->getCase(n->getX()-1,n->getY())->getState()==empty) voisinNonVerfier.push_back(b->getCase(n->getX()-1,n->getY()));
+	int x = n->getX();
+	int y = n->getY();
+
+	int width = b->getWidth();
+	int height = b->getHeight();
+
+	if ( checkBoundaries(x+1,y,width,height) )
+	{
+		if(b->getCase(x+1,y)->getState()==empty||b->getCase(x+1,y)->getState()==exitDoor)
+		{
+			voisinNonVerfier.push_back(b->getCase(n->getX()+1,n->getY()));
+		}
+	}
+	if ( checkBoundaries(x-1,y,width,height))
+	{
+		if(b->getCase(x-1,y)->getState()==empty||b->getCase(x-1,y)->getState()==exitDoor)
+		{
+			voisinNonVerfier.push_back(b->getCase(n->getX()-1,n->getY()));
+		}
+	}
+
+	if ( checkBoundaries(x,y+1,width,height))
+	{
+		if(b->getCase(x,y+1)->getState()==empty||b->getCase(x,y+1)->getState()==exitDoor)
+		{
+			voisinNonVerfier.push_back(b->getCase(n->getX(),n->getY()+1));
+		}
+	}
+	if ( checkBoundaries(x,y-1,width,height))
+	{
+		if(b->getCase(x,y-1)->getState()==empty||b->getCase(x,y-1)->getState()==exitDoor)
+		{
+			voisinNonVerfier.push_back(b->getCase(n->getX(),n->getY()-1));
+		}
+	}
+
 	return voisinNonVerfier;
 }
-vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end,Case*** grid)
+vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end)
 {
 	 vector<Case *> openList;
 	 vector<Case *> closedList;
+	 openList.clear();
+	 closedList.clear();
 
 	 openList.push_back(begin);
 	 begin->setG(0);
@@ -117,6 +192,7 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end,Case*** grid)
 
 	 	vector<Case *> child=children(b,n);
 	 	for(int i=0;i<child.size();i++){
+
 	 		if(std::find(closedList.begin(),closedList.end(),child[i])!=closedList.end())
 	 			continue;
 
@@ -142,16 +218,16 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end,Case*** grid)
 
 
 }
-void Minion::move(Batiment* batiment, int deltaX, int deltaY){
-	Case* emplacement = batiment->getCase(this->getX() + deltaX, this->getY() + deltaY);
+void Minion::move(Batiment* batiment, int x, int y){
+	Case* emplacement = batiment->getCase(x,y);
 	if (emplacement != NULL) {
 		Case* currentCase = batiment->getCase(this->getX(), this->getY());
 		switch (emplacement->getState()) {
 			case StateEnum::empty :
 				emplacement->setState(StateEnum::minion);
 				emplacement->setAgent(this);
-				this->setX(this->getX() + deltaX);
-				this->setY(this->getY() + deltaY);
+				this->setX(x);
+				this->setY(y);
 				currentCase->setState(StateEnum::empty);
 				currentCase->setAgent(NULL);
 				break;

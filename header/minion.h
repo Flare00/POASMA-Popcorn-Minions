@@ -20,13 +20,14 @@ private:
 public:
 	Minion(int x, int y);
 	virtual void action(Batiment* batiment);
-	void move(Batiment* batiment, int deltaX, int deltaY);
+	void move(Batiment* batiment, int x, int y);
 	int calculeHValue(Case * currentCase, Case* goal);
 	Case* chooseBestCase(vector<Case *> openList);
 	vector<Case *> rebuildPath(Case * c);
-	vector<Case *> aStar(Batiment* b,Case*  begin, Case* end,Case*** grid);
+	vector<Case *> aStar(Batiment* b,Case*  begin, Case* end);
 	void printPath(vector<Case *> list);
 	int getIndice(vector<Case *> list, Case * c);
+	bool checkBoundaries(int x, int y, int width, int height);
 	// fonction test a virer
 	void moveToward(Batiment* batiment, Case * c);
 	void idle();
