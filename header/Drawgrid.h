@@ -100,12 +100,23 @@ void drawPopcorn(float x, float y,float tilesize,int zindex){
 	int pas = 100;
 	for (int i = 0 ; i <= pas ; i += 1){
 		double ang = i*(1.0/pas)*TWO_PI;
-
 		double rad = pn.noise(cos(ang)+10*x, sin(ang)+10*y,x*20+y)*(tilesize);
 
 	    glVertex3f(x+tilesize/2+rad*cos(ang),y+tilesize/2+rad*sin(ang),zindex*-0.001);
 	}
 	glEnd();
+
+
+	glColor3f(0.3,0.3,0.3);
+	glBegin(GL_LINE_STRIP);
+	for (int i = 0 ; i <= pas ; i += 1){
+		double ang = i*(1.0/pas)*TWO_PI;
+		double rad = pn.noise(cos(ang)+10*x, sin(ang)+10*y,x*20+y)*(tilesize);
+
+	    glVertex3f(x+tilesize/2+rad*cos(ang),y+tilesize/2+rad*sin(ang),(zindex-1)*-0.001);
+	}
+	glEnd();
+
 }
 
 void drawGrid(Batiment * batiment){
