@@ -4,13 +4,13 @@ OBJ = $(SRC:.cpp=.o)
 EXE = exe
 
 all: $(OBJ)
-	$(GPP) -iquote header -o $(EXE) main.cpp $(OBJ) -L/usr/lib -lglut -lGLU -lGL -lm -lpthread -lgsl -lgslcblas
+	$(GPP) -iquote header -g -o $(EXE) main.cpp $(OBJ) -L/usr/lib -lglut -lGLU -lGL -lm -lpthread -lgsl -lgslcblas
 	rm src/*.o
 	@echo "$(EXE) prêt!"
 
 
 %.o: %.cpp
-	$(GPP) -iquote header -c $< -o $@
+	$(GPP) -iquote header -g -c $< -o $@
 	
 
 clean:
