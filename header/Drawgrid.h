@@ -101,7 +101,7 @@ void drawPopcorn(float x, float y,float tilesize,int zindex){
 	for (int i = 0 ; i <= pas ; i += 1){
 		double ang = i*(1.0/pas)*TWO_PI;
 
-		double rad = pn.noise(cos(ang), sin(ang),x*20+y)*(tilesize);
+		double rad = pn.noise(cos(ang)+10*x, sin(ang)+10*y,x*20+y)*(tilesize);
 
 	    glVertex3f(x+tilesize/2+rad*cos(ang),y+tilesize/2+rad*sin(ang),zindex*-0.001);
 	}
@@ -149,9 +149,6 @@ void drawGrid(Batiment * batiment){
 			float xpos = -gridWidth/2 + x*tilesize;
 			float ypos = -gridHeight/2 + y*tilesize;
 
-
-			//std::cout<<"x="<<x<<" y="<<y<<std::endl;
-
 			StateEnum type = batiment->getState(x,y);
 
 			switch ( type )
@@ -160,13 +157,16 @@ void drawGrid(Batiment * batiment){
 					drawWall(xpos,ypos,tilesize,1);
 					break;
 				case StateEnum::minion:
-					drawPopcorn(xpos,ypos,tilesize,1);
+					drawMinion(xpos,ypos,tilesize,1);
 					break;
 				case StateEnum::flame:
 					drawFire(xpos,ypos,tilesize,1);
 					break;
 				case StateEnum::exitDoor:
 					drawExit(xpos,ypos,tilesize,1);
+					break;
+				case StateEnum::popCorn:
+					drawPopcorn(xpos,ypos,tilesize,1);
 					break;
 					
 			}
