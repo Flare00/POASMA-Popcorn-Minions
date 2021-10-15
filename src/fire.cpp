@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <stdlib.h>
 #include <time.h>
+
 #define PROPAGATION_CHANCE 3
 Fire::Fire(int x, int y){
 	this->pos_x = x;
@@ -13,6 +14,7 @@ void Fire::action(Batiment * batiment){
 	if (rand() % PROPAGATION_CHANCE == 0) {
 		this->propagate(batiment->getCase(this->getX() - 1, this->getY()));
 	}
+
 	if (rand() % PROPAGATION_CHANCE == 0) {
 		this->propagate(batiment->getCase(this->getX() + 1, this->getY()));
 	}
@@ -29,8 +31,8 @@ void Fire::propagate(Case * emplacement){
 		bool fire = false;
 		switch(emplacement->getState()){
 			case StateEnum::minion : 
-				((Minion*)emplacement->getAgent())->popcorn();
 				emplacement->setState(StateEnum::popCorn);
+				((Minion*)emplacement->getAgent())->popcorn();
 				break;
 			case StateEnum::empty :
 				emplacement->setState(StateEnum::flame);

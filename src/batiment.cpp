@@ -2,7 +2,6 @@
 #include "fire.h"
 #include "stateEnum.h"
 #include "minion.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstddef>
@@ -120,9 +119,6 @@
 					if (this->grid[x][y]->getState() == StateEnum::minion) {
 						minions.push_back(agent);
 					}
-					else if (this->grid[x][y]->getState() == StateEnum::flame){
-						fires.push_back(agent);
-					}
 				}
 			}
 		}
@@ -131,6 +127,18 @@
 		for (int i = 0; i < size; i++) {
 			minions[i]->action(this);
 		}
+
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				Agent* agent = this->grid[x][y]->getAgent();
+				if (agent != NULL) {
+					if (this->grid[x][y]->getState() == StateEnum::flame){
+						fires.push_back(agent);
+					}
+				}
+			}
+		}
+
 		size = fires.size();
 		for (int i = 0; i < size; i++) {
 			fires[i]->action(this);
