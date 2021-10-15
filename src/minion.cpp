@@ -1,6 +1,8 @@
 #include "minion.h"
 #include "case.h"
 #include "batiment.h"
+#include <iostream>
+#include <algorithm>
 
 Minion::Minion(int x, int y){
 	this->pos_x = x;
@@ -24,8 +26,122 @@ void Minion::action(Batiment* batiment){
 	}
 
 	this->moveToward(batiment, closestExit);
+	vector<Case *> path;
+	current->setX(x);
+	current->setY(y);
+	path = aStar(batiment,this->current,this->current,batiment->getGrid());
+	printPath(path);
 }
+void Minion::setCaseCurrent(Case * c)
+{
+	this->current = c;
+}
+Case * Minion::getCaseCurrent()
+{
+	return this->current;
+}
+int Minion::calculeHValue(Case * currentCase, Case* goal)
+{
+	return abs(currentCase->getX() - goal->getX())+abs(currentCase->getY() - goal->getY());
+}
+Case* Minion::chooseBestCase(vector<Case *> openList)
+{
+	Case * best = openList.front();
+	for(size_t i = 0 ; i < openList.size() ; i++)
+	{
+		if( best->getF() > openList[i]->getF() )
+		{
+			best = openList[i];
+		}
+	}
+	return best;
+}
+vector<Case *> Minion::rebuildPath(Case * c)
+{
+	if(c->getParent() != NULL)
+	{
+		vector<Case *> p = rebuildPath(c->getParent());
+		c->setVisited(true);
+		p.push_back(c);
+		return p;
+	}
+	else
+		return {};
 
+
+}
+int Minion::getIndice(vector<Case *> list, Case * c)
+{
+	int result = -1;
+	for(int i = 0 ; i < list.size(); i++)
+	{
+		if(c==list[i])
+			result= i;
+	}
+	return result;
+}
+void Minion::printPath(vector<Case *> list)
+{
+	for(int i = 0 ; i < list.size(); i++)
+		std::cout<<list[i]->getX()<<" "<<list[i]->getY()<<std::endl;
+}
+vector<Case *>  Minion::children(Batiment* b,Case* n){
+	vector<Case *>  voisinNonVerfier;
+	if(b->getCase(n->getX(),n->getY()+1)->getState()==empty) voisinNonVerfier.push_back(b->getCase(n->getX(),n->getY()+1));
+	if(b->getCase(n->getX()+1,n->getY())->getState()==empty) voisinNonVerfier.push_back(b->getCase(n->getX()+1,n->getY()));
+	if(b->getCase(n->getX(),n->getY()-1)->getState()==empty) voisinNonVerfier.push_back(b->getCase(n->getX(),n->getY()-1));
+	if(b->getCase(n->getX()-1,n->getY())->getState()==empty) voisinNonVerfier.push_back(b->getCase(n->getX()-1,n->getY()));
+	return voisinNonVerfier;
+}
+vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end,Case*** grid)
+{
+	 vector<Case *> openList;
+	 vector<Case *> closedList;
+
+	 openList.push_back(begin);
+	 begin->setG(0);
+	 begin->setH(calculeHValue(begin,end));
+	 begin->setH(begin->getH());
+	 int indice;
+
+	 while(!openList.empty())
+	 {
+	 	Case* n = chooseBestCase(openList);
+	 	if( end->getX()==n->getX() && end->getY()==n->getY())
+	 		return rebuildPath(n);
+	 	indice = getIndice(openList, n);
+	 	vector<Case*>::iterator nth = openList.begin() + indice;
+	 	if(indice!=-1) // On efface n 
+	 		openList.erase(nth);
+	 	closedList.push_back(n);
+
+	 	vector<Case *> child=children(b,n);
+	 	for(int i=0;i<child.size();i++){
+	 		if(std::find(closedList.begin(),closedList.end(),child[i])!=closedList.end())
+	 			continue;
+
+	 		int cost=1;
+	 		bool bestCost=false;
+	 		if(!(std::find(openList.begin(),openList.end(),child[i])!=openList.end())){
+	 			openList.push_back(child[i]);
+	 			child[i]->setH(calculeHValue(child[i],end));
+	 			bestCost=true;
+	 		}else if(cost < child[i]->getG())
+	 				bestCost=true;
+	 		if(bestCost){
+	 			child[i]->setParent(n);
+	 			child[i]->setG(cost);
+	 			child[i]->setF(child[i]->getG()+child[i]->getH());
+
+	 		}
+
+	 	}
+
+	 }
+	 return {};
+
+
+}
 void Minion::move(Batiment* batiment, int deltaX, int deltaY){
 	Case* emplacement = batiment->getCase(this->getX() + deltaX, this->getY() + deltaY);
 	if (emplacement != NULL) {

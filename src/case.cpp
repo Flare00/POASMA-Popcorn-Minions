@@ -43,6 +43,42 @@ void Case::setY(int y){
 	this->pos_y = y;
 }
 
+int Case::getF(){
+	return this->f;
+}
+int Case::getG(){
+	return this->g;
+}
+int Case::getH(){
+	return this->h;
+}
+void Case::setF(int f){
+	this->f = f;
+}
+void Case::setG(int g){
+	this->g = g;
+}
+void Case::setH(int h){
+	this->h = h;
+}
+
+void Case::setParent(Case* parent)
+{
+	this->parent = parent;
+}
+Case* Case::getParent()
+{
+	return this->parent;
+}
+
+bool Case::getVisited()
+{
+	return this->visited;
+}
+void Case::setVisited(bool visited)
+{
+	this->visited = visited;
+}
 // fonction test pour avancer
 int Case::distaceHamilton(Case* c1,Case* c2){
 	int dx = c1->getX()-c2->getX();
