@@ -1,6 +1,7 @@
 #include "Vec3.h"
 #include "Camera.h"
 #include "batiment.h"
+#include "PerlinNoise.h"
 
 #define NOTHING 0
 #define WALL 1
@@ -86,6 +87,27 @@ void drawExit(float x, float y,float tilesize,int zindex){
 	glEnd();
 }
 
+void drawPopcorn(float x, float y,float tilesize,int zindex){
+	PerlinNoise pn;
+
+
+
+	double rad = tilesize/2;
+
+	glColor3f(1.,1.,1.);
+	glBegin(GL_POLYGON);
+	glVertex3f(x+tilesize/2,y+tilesize/2,zindex*-0.001);
+	int pas = 100;
+	for (int i = 0 ; i <= pas ; i += 1){
+		double ang = i*(1.0/pas)*TWO_PI;
+
+		double rad = pn.noise(cos(ang), sin(ang),x*20+y)*(tilesize);
+
+	    glVertex3f(x+tilesize/2+rad*cos(ang),y+tilesize/2+rad*sin(ang),zindex*-0.001);
+	}
+	glEnd();
+}
+
 void drawGrid(Batiment * batiment){
 
 	int width = batiment->getWidth();
@@ -138,7 +160,7 @@ void drawGrid(Batiment * batiment){
 					drawWall(xpos,ypos,tilesize,1);
 					break;
 				case StateEnum::minion:
-					drawMinion(xpos,ypos,tilesize,1);
+					drawPopcorn(xpos,ypos,tilesize,1);
 					break;
 				case StateEnum::flame:
 					drawFire(xpos,ypos,tilesize,1);
