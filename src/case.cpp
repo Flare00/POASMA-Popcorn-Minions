@@ -43,6 +43,7 @@ void Case::setY(int y){
 	this->pos_y = y;
 }
 
+// fonction test pour avancer
 int Case::distaceHamilton(Case* c1,Case* c2){
 	int dx = c1->getX()-c2->getX();
 	dx = dx>0?dx:-dx;

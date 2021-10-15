@@ -10,8 +10,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <chrono>
-#include <cstddef>
-#include <ctime>
 
 #include "header/Vec3.h"
 #include "header/Camera.h"
@@ -161,7 +159,7 @@ int main(int argc,char** argv){
     glutInitWindowSize(SCREENWIDTH, SCREENHEIGHT);
     window = glutCreateWindow("Popcorn Minions");
 
-    bat = new Batiment(20, 20, 1, 1, 1 ,10);
+    bat = new Batiment(10, 10, 1, 1, 1 ,10);
 
     init();
     glutIdleFunc(idle);

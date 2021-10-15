@@ -1,26 +1,7 @@
-#ifndef includes
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <algorithm>
-#include <string>
-#include <cstdio>
-#include <cstdlib>
-#include <GL/glut.h>
-#include <float.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <chrono>
-#include <cstddef>
-#include <ctime>
-
 #include "batiment.h"
 #include "fire.h"
 #include "stateEnum.h"
 #include "minion.h"
-#include "case.h"
-
-#endif
 
 #include <stdio.h>
 #include <stdlib.h>
