@@ -30,6 +30,8 @@ void Fire::propagate(Case * emplacement){
 		switch(emplacement->getState()){
 			case StateEnum::minion : 
 				((Minion*)emplacement->getAgent())->popcorn();
+				emplacement->setState(StateEnum::popCorn);
+				break;
 			case StateEnum::empty :
 				emplacement->setState(StateEnum::flame);
 				emplacement->setAgent(new Fire(emplacement->getX(), emplacement->getY()));
