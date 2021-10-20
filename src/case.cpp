@@ -8,6 +8,7 @@ Case::Case(int x, int y){
 	this->pos_x = x;
 	this->pos_y = y;
 
+	this->isPath =false;
 	this->f=0;
 	this->g=0;
 	this->h=0;
@@ -84,6 +85,14 @@ bool Case::getVisited()
 void Case::setVisited(bool visited)
 {
 	this->visited = visited;
+}
+bool Case::getIsPath()
+{
+	return this->isPath;
+}
+void Case::setIsPath(bool isPath)
+{
+	this->isPath = isPath;
 }
 // fonction test pour avancer
 int Case::distaceHamilton(Case* c1,Case* c2){

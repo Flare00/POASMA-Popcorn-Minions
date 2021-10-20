@@ -11,6 +11,7 @@ private :
 	int f,g,h;
 	Case * parent;
 	bool visited;
+	bool isPath;
 public :
 	Case(int x, int y);
 	~Case();
@@ -37,6 +38,9 @@ public :
 
 	bool getVisited();
 	void setVisited(bool visited);
+
+	bool getIsPath();
+	void setIsPath(bool isPath);
 	
 	static int distaceHamilton(Case* c1,Case* c2);
 };

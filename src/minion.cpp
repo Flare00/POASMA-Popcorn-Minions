@@ -37,8 +37,9 @@ void Minion::action(Batiment* batiment){
 		std::cout<<"Départ:"<<x<<" "<<y<<std::endl;
 		std::cout<<"Arrivée:"<<closestExit->getX()<<" "<<closestExit->getY()<<std::endl;
 		printGridAStar(batiment,closestExit,x,y);
-		printPath(path);
+		
 		*/
+		printPath(path);
 
 		if(path.size()>1)
 		{
@@ -125,7 +126,8 @@ vector<Case *> Minion::rebuildPath(Case * c)
 	while(c->getParent() != NULL)
 	{
 		c = c->getParent();
-		c->setVisited(true);
+		//c->setVisited(true);
+		c->setIsPath(true);
 		p.push_back(c);
 		
 	}
@@ -210,7 +212,10 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end)
 
 	 while(!openList.empty())
 	 {
-
+	 	/*for(int i = 0 ; i < openList.size() ; i++)
+	 	{
+	 		std::cout<<openList[i]->getX()<<":"<<openList[i]->getY()<<" "<<endl;;
+	 	}*/
 	 	Case* n = chooseBestCase(openList);
 	 	if( end->getX()==n->getX() && end->getY()==n->getY())
 	 		return rebuildPath(n);
@@ -219,16 +224,18 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end)
 	 	if(indice!=-1) // On efface n 
 	 		openList.erase(nth);
 	 	closedList.push_back(n);
+	 	n->setVisited(true);
 
 	 	vector<Case *> child=children(b,n);
 	 	for(int i=0;i<child.size();i++){
-	 		if(std::find(closedList.begin(),closedList.end(),child[i])!=closedList.end())
+	 		if(std::find(closedList.begin(),closedList.end(),child[i])!=closedList.end()) // child[i] in closedlist ?
 	 			continue;
 
 	 		int cost=1;
 	 		bool bestCost=false;
-	 		if(!(std::find(openList.begin(),openList.end(),child[i])!=openList.end())){
+	 		if(!(std::find(openList.begin(),openList.end(),child[i])!=openList.end())){ // child[i] not in openlist ?
 	 			openList.push_back(child[i]);
+	 			
 	 			child[i]->setH(calculeHValue(child[i],end));
 
 	 			bestCost=true;
@@ -242,6 +249,8 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end)
 	 		}
 
 	 	}
+	 
+
 
 	 }
 

@@ -20,6 +20,7 @@ public:
 	Case** getExitDoors(); //Return all exit cases;
 
 	StateEnum getState(int x, int y);
+
 	Case* getCase(int x, int y);
 	Case*** getGrid();
 	int getWidth();
@@ -28,6 +29,8 @@ public:
 	void escapeMinion();
 	int getRemainingMinions();
 	void doAction();
+
+	
 };
 
 #endif

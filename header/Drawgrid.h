@@ -86,7 +86,26 @@ void drawExit(float x, float y,float tilesize,int zindex){
 	 y+tilesize,1);
 	glEnd();
 }
+void drawAStarVisited(float x, float y,float tilesize,int zindex){
+	glColor3f(1.,0.1,0.05);
+	glBegin(GL_QUADS);
 
+	drawQuad(x,
+	 y,
+	 x+tilesize,
+	 y+tilesize,1);
+	glEnd();
+}
+void drawAStarVisited2(float x, float y,float tilesize,int zindex){
+	glColor3f(0.05,0.1,1.);
+	glBegin(GL_QUADS);
+
+	drawQuad(x,
+	 y,
+	 x+tilesize,
+	 y+tilesize,1);
+	glEnd();
+}
 void drawPopcorn(float x, float y,float tilesize,int zindex){
 	PerlinNoise pn;
 
@@ -123,6 +142,7 @@ void drawGrid(Batiment * batiment){
 
 	int width = batiment->getWidth();
 	int height = batiment->getHeight();
+	Case*** grid =batiment->getGrid();
 
 	float tilesize = 2.0 /(std::max(width,height));
 	//std::cout<<tilesize<<std::endl;
@@ -140,19 +160,19 @@ void drawGrid(Batiment * batiment){
     glEnd();
 
     ////les carreaux
-
-    glColor3f(0.9,0.9,0.9);
-	glBegin(GL_LINES);
-    for (int x = 0; x <= width; ++x){
-    	glVertex3f(-gridWidth/2 + x*tilesize,-gridHeight/2,0);
-    	glVertex3f(-gridWidth/2 + x*tilesize, gridHeight/2,0);
-	}
-	for (int y = 0; y <= height; ++y){
-		glVertex3f(-gridWidth/2,-gridHeight/2 + y*tilesize,0);
-    	glVertex3f( gridWidth/2,-gridHeight/2 + y*tilesize,0);
-	}
-	
-	glEnd();
+  
+	    glColor3f(0.9,0.9,0.9);
+		glBegin(GL_LINES);
+	    for (int x = 0; x <= width; ++x){
+	    	glVertex3f(-gridWidth/2 + x*tilesize,-gridHeight/2,0);
+	    	glVertex3f(-gridWidth/2 + x*tilesize, gridHeight/2,0);
+		}
+		for (int y = 0; y <= height; ++y){
+			glVertex3f(-gridWidth/2,-gridHeight/2 + y*tilesize,0);
+	    	glVertex3f( gridWidth/2,-gridHeight/2 + y*tilesize,0);
+		}
+		
+		glEnd();
 
 
     for (int x = 0; x < width; ++x){
@@ -161,6 +181,7 @@ void drawGrid(Batiment * batiment){
 			float ypos = -gridHeight/2 + y*tilesize;
 
 			StateEnum type = batiment->getState(x,y);
+			Case * currCase = batiment->getCase(x,y);
 
 			switch ( type )
 			{
@@ -181,6 +202,10 @@ void drawGrid(Batiment * batiment){
 					break;
 					
 			}
+			/*if(currCase->getIsPath())
+				drawAStarVisited(xpos,ypos,tilesize,1);*/
+			if(currCase->getVisited())
+				drawAStarVisited2(xpos,ypos,tilesize,1);
 
 		}
 	}
