@@ -202,10 +202,10 @@ void drawGrid(Batiment * batiment){
 					break;
 					
 			}
-			/*if(currCase->getIsPath())
-				drawAStarVisited(xpos,ypos,tilesize,1);*/
-			if(currCase->getVisited())
+			if(currCase->getIsPath())
 				drawAStarVisited2(xpos,ypos,tilesize,1);
+			/*if(currCase->getVisited())
+				drawAStarVisited2(xpos,ypos,tilesize,1);*/
 
 		}
 	}

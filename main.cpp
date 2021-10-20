@@ -159,7 +159,7 @@ int main(int argc,char** argv){
     glutInitWindowSize(SCREENWIDTH, SCREENHEIGHT);
     window = glutCreateWindow("Popcorn Minions");
 
-    bat = new Batiment(10, 10, 7, 1, 1 ,10);
+    bat = new Batiment(10, 10,9 , 1, 1 ,10);
 
     init();
     glutIdleFunc(idle);

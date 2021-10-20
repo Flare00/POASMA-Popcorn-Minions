@@ -155,7 +155,7 @@ void Minion::printPath(vector<Case *> list)
 }
 bool Minion::checkBoundaries(int x, int y, int width, int height)
 {
-	return x>0&&x<width && y>0&&y<height;
+	return x>=0&&x<width && y>=0&&y<height;
 }
 vector<Case *>  Minion::children(Batiment* b,Case* n){
 	vector<Case *>  voisinNonVerfier;
@@ -164,6 +164,7 @@ vector<Case *>  Minion::children(Batiment* b,Case* n){
 
 	int width = b->getWidth();
 	int height = b->getHeight();
+
 
 	if ( checkBoundaries(x+1,y,width,height) )
 	{
