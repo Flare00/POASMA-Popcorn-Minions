@@ -8,6 +8,7 @@ Minion::Minion(int x, int y){
 	this->pos_x = x;
 	this->pos_y = y;
 }
+
 void Minion::action(Batiment* batiment){
 	Case* emplacement = batiment->getCase(this->getX(), this->getY());
 	int x = this->getX();
@@ -18,7 +19,7 @@ void Minion::action(Batiment* batiment){
 		Case*** grid = batiment->getGrid();
 		Case* closestExit = exitDoors[0];
 
-		// TODO je sais pas comment connaitre la taille du tableau ?
+		// TODO je sais pas comment connaitre la taille du tableau ? Moi non plus !
 		for (int i = 0; i < 1; ++i) 
 		{
 			if(Case::distaceHamilton(exitDoors[i],emplacement)<Case::distaceHamilton(closestExit,emplacement)){
@@ -30,12 +31,14 @@ void Minion::action(Batiment* batiment){
 		path.clear();
 
 
+		path = aStar(batiment,emplacement,closestExit);
+		/*
+		//Debug
 		std::cout<<"Départ:"<<x<<" "<<y<<std::endl;
 		std::cout<<"Arrivée:"<<closestExit->getX()<<" "<<closestExit->getY()<<std::endl;
-		
-
-		path = aStar(batiment,emplacement,closestExit);
+		printGridAStar(batiment,closestExit,x,y);
 		printPath(path);
+		*/
 
 		if(path.size()>1)
 		{
@@ -55,13 +58,39 @@ void Minion::action(Batiment* batiment){
 			this->move(batiment, to->getX(),to->getY());
 		}
 		else
-		{
-			this->move(batiment, closestExit->getX(),closestExit->getY());
-			exit(0); // On sort quand il trouve la sortie
+		{	if( (abs(x-closestExit->getX())) <=1 && (abs(y-closestExit->getY()))<=1 )
+			{
+				this->move(batiment, closestExit->getX(),closestExit->getY());
+				batiment->escapeMinion();
+				if(batiment->getRemainingMinions()==0)
+					exit(0); // On sort quand il trouve la sortie
+
+			}
+
+
 		}
 		
 		
 	
+}
+void Minion::printGridAStar(Batiment* batiment, Case *closestExit, int x, int y)
+{
+	Case*** grid = batiment->getGrid();
+		for(int i = 0; i < batiment->getHeight() ; i++)
+		{
+			for(int j = 0; j < batiment->getWidth() ; j++)
+				{
+					
+					if( (batiment->getHeight()-1-i) == y && j == x)
+						std::cout<<"X"<<" ";
+					else if( (batiment->getHeight()-1-i) == closestExit->getY() && j == closestExit->getX())
+						std::cout<<"[]"<<" ";
+					else
+						std::cout<<grid[batiment->getHeight()-1-i][j]->getH()<<" ";
+				}
+				std::cout<<" "<<std::endl;
+		}
+
 }
 void Minion::setCaseCurrent(Case * c)
 {
@@ -73,7 +102,7 @@ Case * Minion::getCaseCurrent()
 }
 int Minion::calculeHValue(Case * currentCase, Case* goal)
 {
-	return abs(currentCase->getX() - goal->getX())+abs(currentCase->getY() - goal->getY());
+	return max(abs(currentCase->getX() - goal->getX())+abs(currentCase->getY() - goal->getY()),0);
 }
 Case* Minion::chooseBestCase(vector<Case *> openList)
 {
@@ -170,8 +199,8 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end)
 {
 	 vector<Case *> openList;
 	 vector<Case *> closedList;
-	 openList.clear();
-	 closedList.clear();
+	 //openList.clear();
+	 //closedList.clear();
 
 	 openList.push_back(begin);
 	 begin->setG(0);
@@ -181,6 +210,7 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end)
 
 	 while(!openList.empty())
 	 {
+
 	 	Case* n = chooseBestCase(openList);
 	 	if( end->getX()==n->getX() && end->getY()==n->getY())
 	 		return rebuildPath(n);
@@ -192,7 +222,6 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end)
 
 	 	vector<Case *> child=children(b,n);
 	 	for(int i=0;i<child.size();i++){
-
 	 		if(std::find(closedList.begin(),closedList.end(),child[i])!=closedList.end())
 	 			continue;
 
@@ -201,6 +230,7 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end)
 	 		if(!(std::find(openList.begin(),openList.end(),child[i])!=openList.end())){
 	 			openList.push_back(child[i]);
 	 			child[i]->setH(calculeHValue(child[i],end));
+
 	 			bestCost=true;
 	 		}else if(cost < child[i]->getG())
 	 				bestCost=true;
@@ -214,6 +244,7 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end)
 	 	}
 
 	 }
+
 	 return {};
 
 

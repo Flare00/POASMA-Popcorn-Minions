@@ -12,27 +12,28 @@ Fire::Fire(int x, int y){
 }
 void Fire::action(Batiment * batiment){
 	if (rand() % PROPAGATION_CHANCE == 0) {
-		this->propagate(batiment->getCase(this->getX() - 1, this->getY()));
+		this->propagate(batiment->getCase(this->getX() - 1, this->getY()) ,batiment);
 	}
 
 	if (rand() % PROPAGATION_CHANCE == 0) {
-		this->propagate(batiment->getCase(this->getX() + 1, this->getY()));
+		this->propagate(batiment->getCase(this->getX() + 1, this->getY()),batiment);
 	}
 	if (rand() % PROPAGATION_CHANCE == 0) {
-		this->propagate(batiment->getCase(this->getX(), this->getY() - 1));
+		this->propagate(batiment->getCase(this->getX(), this->getY() - 1),batiment);
 	}
 	if (rand() % PROPAGATION_CHANCE == 0) {
-		this->propagate(batiment->getCase(this->getX(), this->getY() + 1));
+		this->propagate(batiment->getCase(this->getX(), this->getY() + 1),batiment);
 	}
 }
 
-void Fire::propagate(Case * emplacement){
+void Fire::propagate(Case * emplacement,Batiment * batiment){
 	if(emplacement != NULL){
 		bool fire = false;
 		switch(emplacement->getState()){
 			case StateEnum::minion : 
 				emplacement->setState(StateEnum::popCorn);
 				((Minion*)emplacement->getAgent())->popcorn();
+				batiment->escapeMinion(); // He escaped to heaven, press F
 				break;
 			case StateEnum::empty :
 				emplacement->setState(StateEnum::flame);

@@ -24,6 +24,9 @@ public:
 	Case*** getGrid();
 	int getWidth();
 	int getHeight();
+
+	void escapeMinion();
+	int getRemainingMinions();
 	void doAction();
 };
 

@@ -93,6 +93,15 @@
 		}
 		return res;
 	}
+	void  Batiment::escapeMinion()
+	{
+		this->start_nbminion--;
+	}
+	int Batiment::getRemainingMinions()
+	{
+		return this->start_nbminion;
+	}
+
 
 	Case* Batiment::getCase(int x, int y){
 

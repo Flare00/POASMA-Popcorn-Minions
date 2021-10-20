@@ -29,6 +29,7 @@ public:
 	int getIndice(vector<Case *> list, Case * c);
 	bool checkBoundaries(int x, int y, int width, int height);
 	// fonction test a virer
+	void printGridAStar(Batiment* batiment, Case *closestExit, int x, int y);
 	void moveToward(Batiment* batiment, Case * c);
 	void idle();
 	void panik(Batiment* batiment);

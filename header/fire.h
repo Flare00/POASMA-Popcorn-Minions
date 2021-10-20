@@ -5,7 +5,7 @@
 class Fire : public Agent{
 public:
 	Fire(int x, int y);
-	void propagate( Case * emplacement);
+	void propagate( Case * emplacement,Batiment * batiment);
 	virtual void action(Batiment* batiment);
 
 };

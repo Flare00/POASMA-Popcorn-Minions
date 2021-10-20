@@ -7,6 +7,12 @@ Case::Case(int x, int y){
 	this->agent = NULL;
 	this->pos_x = x;
 	this->pos_y = y;
+
+	this->f=0;
+	this->g=0;
+	this->h=0;
+	this->parent=NULL;
+	this->visited= false;
 }
 
 Case::~Case()
