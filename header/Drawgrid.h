@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "batiment.h"
 #include "PerlinNoise.h"
+#include "minion.h"
 
 #define NOTHING 0
 #define WALL 1
@@ -74,6 +75,25 @@ void drawMinion(float x, float y,float tilesize,int zindex){
 	    glVertex3f(x+tilesize/2+tilesize/4*cos(angle),y+tilesize/2+tilesize/4*sin(angle),(zindex-1)*-0.001);
 	}
 	glEnd();
+
+}
+void drawPanikedMinion(float x, float y,float tilesize,int zindex){
+	glColor3f(0.4,0.4,1.);
+
+	glBegin(GL_POLYGON);
+	for (double angle = 0 ; angle < TWO_PI ; angle += PI/8){
+	    glVertex3f(x+tilesize/2+tilesize/2*cos(angle),y+tilesize/2+tilesize/2*sin(angle),zindex*-0.001);
+	}
+	glEnd();
+
+	glColor3f(0.,0.,0.);
+	glBegin(GL_LINES);
+	for (double angle = 0 ; angle < TWO_PI ; angle += PI/4){
+	    glVertex3f(x+tilesize/2,y+tilesize/2,(zindex-1)*-0.001);
+	    glVertex3f(x+tilesize/2+tilesize/4*cos(angle),y+tilesize/2+tilesize/4*sin(angle),(zindex-1)*-0.001);
+	}
+	glEnd();
+	
 
 }
 void drawExit(float x, float y,float tilesize,int zindex){
@@ -190,7 +210,11 @@ void drawGrid(Batiment * batiment){
 					drawWall(xpos,ypos,tilesize,2);
 					break;
 				case StateEnum::minion:
-					drawMinion(xpos,ypos,tilesize,2);
+					if(((Minion*)currCase->getAgent())->isPaniked()){
+						drawPanikedMinion(xpos,ypos,tilesize,2);
+					}else{
+						drawMinion(xpos,ypos,tilesize,2);
+					}
 					break;
 				case StateEnum::flame:
 					drawFire(xpos,ypos,tilesize,2);
