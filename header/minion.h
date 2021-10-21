@@ -13,6 +13,7 @@ class Minion : public Agent{
 private:
 	bool alive = true;
 	bool escape = false;
+	bool flagPanik = false;
 	vector<Case> path;
 
 	Case * current;
@@ -38,6 +39,7 @@ public:
 	vector<Case *> children(Batiment* b,Case* n);
 	void setCaseCurrent(Case * c);
 	Case * getCaseCurrent();
+	bool isPaniked();
 };
 
 #endif

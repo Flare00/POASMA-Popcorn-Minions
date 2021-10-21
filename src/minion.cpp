@@ -60,16 +60,17 @@ void Minion::action(Batiment* batiment){
 			this->move(batiment, to->getX(),to->getY());
 		}
 		else
-		{	if( (abs(x-closestExit->getX())) <=1 && (abs(y-closestExit->getY()))<=1 )
+		{	
+			if( (abs(x-closestExit->getX())) <=1 && (abs(y-closestExit->getY()))<=1 )
 			{
 				this->move(batiment, closestExit->getX(),closestExit->getY());
 				batiment->escapeMinion();
-				if(batiment->getRemainingMinions()==0)
-					exit(0); // On sort quand il trouve la sortie
-
+				/*if (batiment->getRemainingMinions() == 0)
+					exit(0); // On sort quand il trouve la sortie*/
 			}
-
-
+			else {
+				this->panik(batiment);
+			}
 		}
 		
 		
@@ -101,6 +102,10 @@ void Minion::setCaseCurrent(Case * c)
 Case * Minion::getCaseCurrent()
 {
 	return this->current;
+}
+bool Minion::isPaniked()
+{
+	return this->flagPanik;
 }
 int Minion::calculeHValue(Case * currentCase, Case* goal)
 {
@@ -293,6 +298,7 @@ void Minion::idle(){
 }
 void Minion::panik(Batiment* batiment){
 	srand(time(NULL));
+	this->flagPanik = true;
 	int deplacement = (rand() % 2 == 0) ? -1 : 1;
 	int direction = (rand() % 2);
 	if (direction == 0) {
