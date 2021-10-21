@@ -30,10 +30,10 @@ int** initGrid(int width, int height){
 }
 
 void drawQuad(float x1, float y1,float x2, float y2,int zindex){
-	glVertex3f(x2,y2,zindex*-0.001);
-    glVertex3f(x1,y2,zindex*-0.001);
-    glVertex3f(x1,y1,zindex*-0.001);
-    glVertex3f(x2,y1,zindex*-0.001);
+	glVertex3f(x2,y2,zindex*-0.005);
+    glVertex3f(x1,y2,zindex*-0.005);
+    glVertex3f(x1,y1,zindex*-0.005);
+    glVertex3f(x2,y1,zindex*-0.005);
 }
 
 void drawWall(float x, float y,float tilesize,int zindex){
@@ -98,12 +98,13 @@ void drawAStarVisited(float x, float y,float tilesize,int zindex){
 }
 void drawAStarVisited2(float x, float y,float tilesize,int zindex){
 	glColor3f(0.05,0.1,1.);
+	glColor3f(0.7,0.7,0.9);
 	glBegin(GL_QUADS);
 
 	drawQuad(x,
 	 y,
 	 x+tilesize,
-	 y+tilesize,1);
+	 y+tilesize,zindex);
 	glEnd();
 }
 void drawPopcorn(float x, float y,float tilesize,int zindex){
@@ -186,19 +187,19 @@ void drawGrid(Batiment * batiment){
 			switch ( type )
 			{
 				case StateEnum::wall:
-					drawWall(xpos,ypos,tilesize,1);
+					drawWall(xpos,ypos,tilesize,2);
 					break;
 				case StateEnum::minion:
-					drawMinion(xpos,ypos,tilesize,1);
+					drawMinion(xpos,ypos,tilesize,2);
 					break;
 				case StateEnum::flame:
-					drawFire(xpos,ypos,tilesize,1);
+					drawFire(xpos,ypos,tilesize,2);
 					break;
 				case StateEnum::exitDoor:
-					drawExit(xpos,ypos,tilesize,1);
+					drawExit(xpos,ypos,tilesize,2);
 					break;
 				case StateEnum::popCorn:
-					drawPopcorn(xpos,ypos,tilesize,1);
+					drawPopcorn(xpos,ypos,tilesize,2);
 					break;
 					
 			}

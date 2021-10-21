@@ -39,7 +39,7 @@ void Minion::action(Batiment* batiment){
 		printGridAStar(batiment,closestExit,x,y);
 		
 		*/
-		printPath(path);
+		//printPath(path);
 
 		if(path.size()>1)
 		{
@@ -57,7 +57,10 @@ void Minion::action(Batiment* batiment){
 					grid[i][j]->setH(0);
 
 				}
-			this->move(batiment, to->getX(),to->getY());
+
+			if(to->getState() == StateEnum::empty){
+				this->move(batiment, to->getX(),to->getY());
+			}
 		}
 		else
 		{	
@@ -129,14 +132,17 @@ vector<Case *> Minion::rebuildPath(Case * c)
 {
 	vector<Case *> p;
 
-	while(c->getParent() != NULL)
+	int count = 0;
+	while(c->getParent() != NULL & count<10000)
 	{
+		count++;
 		c = c->getParent();
 		//c->setVisited(true);
 		c->setIsPath(true);
 		p.push_back(c);
 		
 	}
+	//cout<<count<<endl;
 	return p;
 }
 int Minion::getIndice(vector<Case *> list, Case * c)
@@ -153,8 +159,8 @@ void Minion::printPath(vector<Case *> list)
 {
 	if(list.size()>0)
 	{
-		for(int i = 0 ; i < list.size(); i++)
-			std::cout<<list[i]->getX()<<" "<<list[i]->getY()<<std::endl;
+		//for(int i = 0 ; i < list.size(); i++)
+		//	std::cout<<list[i]->getX()<<" "<<list[i]->getY()<<std::endl;
 
 	}
 
@@ -238,7 +244,12 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end)
 	 		if(std::find(closedList.begin(),closedList.end(),child[i])!=closedList.end()) // child[i] in closedlist ?
 	 			continue;
 
-	 		int cost=1;
+	 		int cost;
+	 		if(child[i]->getState()==minion){
+	 			cost = 5;
+	 		}else{
+	 			cost = 1;
+	 		}
 	 		bool bestCost=false;
 	 		if(!(std::find(openList.begin(),openList.end(),child[i])!=openList.end())){ // child[i] not in openlist ?
 	 			openList.push_back(child[i]);
@@ -301,16 +312,12 @@ void Minion::panik(Batiment* batiment){
 	this->flagPanik = true;
 	int deplacement = (rand() % 2 == 0) ? -1 : 1;
 	int direction = (rand() % 2);
-	std::cout << "deplacement : " << deplacement << std::endl;
-	std::cout << "dir : " << direction << std::endl;
 
 	if (direction == 0) {
-		this->move(batiment, this->getX() + deplacement, this->getY());
-		std::cout << "A" << std::endl;
+		this->move(batiment, this->getX() + deplacement, this->getY());	
 	}
 	else {
-		this->move(batiment, this->getX(), this->getY() + deplacement);
-		std::cout << "B" << std::endl;
+		this->move(batiment, this->getX(), this->getY() + deplacement);	
 	}
 
 }
