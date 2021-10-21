@@ -297,15 +297,20 @@ void Minion::idle(){
 	
 }
 void Minion::panik(Batiment* batiment){
-	srand(time(NULL));
+	srand(clock());
 	this->flagPanik = true;
 	int deplacement = (rand() % 2 == 0) ? -1 : 1;
 	int direction = (rand() % 2);
+	std::cout << "deplacement : " << deplacement << std::endl;
+	std::cout << "dir : " << direction << std::endl;
+
 	if (direction == 0) {
-		this->move(batiment, deplacement, 0);
+		this->move(batiment, this->getX() + deplacement, this->getY());
+		std::cout << "A" << std::endl;
 	}
 	else {
-		this->move(batiment, 0, deplacement);
+		this->move(batiment, this->getX(), this->getY() + deplacement);
+		std::cout << "B" << std::endl;
 	}
 
 }
