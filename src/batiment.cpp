@@ -122,6 +122,14 @@
 	{
 		std::vector<Agent*> minions;
 		std::vector<Agent*> fires;
+		for(int i = 0; i < this->getWidth() ; i++)
+		{
+			for(int j = 0; j < this->getHeight() ; j++)
+			{
+				grid[i][j]->setIsPath(false);
+			}
+		}
+
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				Agent* agent = this->grid[x][y]->getAgent();

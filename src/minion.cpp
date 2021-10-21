@@ -55,6 +55,7 @@ void Minion::action(Batiment* batiment){
 					grid[i][j]->setF(0);
 					grid[i][j]->setG(0);
 					grid[i][j]->setH(0);
+
 				}
 			this->move(batiment, to->getX(),to->getY());
 		}
@@ -168,14 +169,14 @@ vector<Case *>  Minion::children(Batiment* b,Case* n){
 
 	if ( checkBoundaries(x+1,y,width,height) )
 	{
-		if(b->getCase(x+1,y)->getState()==empty||b->getCase(x+1,y)->getState()==exitDoor)
+		if(b->getCase(x+1,y)->getState()==empty||b->getCase(x+1,y)->getState()==exitDoor||b->getCase(x+1,y)->getState()==minion)
 		{
 			voisinNonVerfier.push_back(b->getCase(n->getX()+1,n->getY()));
 		}
 	}
 	if ( checkBoundaries(x-1,y,width,height))
 	{
-		if(b->getCase(x-1,y)->getState()==empty||b->getCase(x-1,y)->getState()==exitDoor)
+		if(b->getCase(x-1,y)->getState()==empty||b->getCase(x-1,y)->getState()==exitDoor||b->getCase(x-1,y)->getState()==minion)
 		{
 			voisinNonVerfier.push_back(b->getCase(n->getX()-1,n->getY()));
 		}
@@ -183,14 +184,14 @@ vector<Case *>  Minion::children(Batiment* b,Case* n){
 
 	if ( checkBoundaries(x,y+1,width,height))
 	{
-		if(b->getCase(x,y+1)->getState()==empty||b->getCase(x,y+1)->getState()==exitDoor)
+		if(b->getCase(x,y+1)->getState()==empty||b->getCase(x,y+1)->getState()==exitDoor||b->getCase(x,y+1)->getState()==minion)
 		{
 			voisinNonVerfier.push_back(b->getCase(n->getX(),n->getY()+1));
 		}
 	}
 	if ( checkBoundaries(x,y-1,width,height))
 	{
-		if(b->getCase(x,y-1)->getState()==empty||b->getCase(x,y-1)->getState()==exitDoor)
+		if(b->getCase(x,y-1)->getState()==empty||b->getCase(x,y-1)->getState()==exitDoor||b->getCase(x,y-1)->getState()==minion)
 		{
 			voisinNonVerfier.push_back(b->getCase(n->getX(),n->getY()-1));
 		}
