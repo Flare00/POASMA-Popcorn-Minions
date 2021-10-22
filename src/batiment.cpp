@@ -6,9 +6,10 @@
 #include <stdlib.h>
 #include <cstddef>
 #include <time.h>
-#include <ostream>
+#include <iostream>
 #include <vector>
 	Batiment::Batiment(int x, int y, int start_nbminion, int start_nbfire, int nb_exits, int nb_wall){
+		this->escapedMinion = 0;
 		this->start_nbminion = start_nbminion;
 		this->start_nbfire = start_nbfire;
 		this->nb_exits = nb_exits;
@@ -23,7 +24,7 @@
 				grid[i][j]->setState(StateEnum::empty);
 			}
 		}
-		srand(time(NULL));
+//		srand(time(NULL));
 		int putted = 0;
 		while(putted < nb_exits){
 			int i = rand()%x;
@@ -80,8 +81,9 @@
 	StateEnum Batiment::getState(int x, int y){
 		return this->getCase(x,y)->getState();
 	}
-	Case** Batiment::getExitDoors(){
-		Case ** res = new Case*[this->nb_exits];
+	std::vector<Case *> Batiment::getExitDoors(){
+		std::vector<Case *> res;// = new Case*[this->nb_exits];
+		res.resize(this->nb_exits);
 		int found = 0;
 		for(int i = 0; i < this->width && found < nb_exits ; i++){
 			for(int j = 0; j < this->height && found < nb_exits ; j++){
@@ -94,6 +96,12 @@
 		return res;
 	}
 	void  Batiment::escapeMinion()
+	{
+		this->escapedMinion++;
+		this->start_nbminion--;
+		std::cout<<"Nombre de minions qui se sont échapés depuis le début des temps : "<<this->escapedMinion<<std::endl;
+	}
+	void  Batiment::burnedMinion()
 	{
 		this->start_nbminion--;
 	}

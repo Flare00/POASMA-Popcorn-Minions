@@ -33,7 +33,8 @@ void Fire::propagate(Case * emplacement,Batiment * batiment){
 			case StateEnum::minion : 
 				emplacement->setState(StateEnum::popCorn);
 				((Minion*)emplacement->getAgent())->popcorn();
-				batiment->escapeMinion(); // He escaped to heaven, press F
+				//batiment->escapeMinion(); // He escaped to heaven, press F
+				batiment->burnedMinion();
 				if(batiment->getRemainingMinions()==0)
 					exit(0);
 				break;

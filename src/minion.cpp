@@ -15,12 +15,12 @@ void Minion::action(Batiment* batiment){
 	int y = this->getY();
 
 
-		Case** exitDoors = batiment->getExitDoors();
+		std::vector<Case *> exitDoors = batiment->getExitDoors();
 		Case*** grid = batiment->getGrid();
 		Case* closestExit = exitDoors[0];
 
 		// TODO je sais pas comment connaitre la taille du tableau ? Moi non plus !
-		for (int i = 0; i < 1; ++i) 
+		for (int i = 0; i < exitDoors.size(); ++i) 
 		{
 			if(Case::distaceHamilton(exitDoors[i],emplacement)<Case::distaceHamilton(closestExit,emplacement)){
 				closestExit = exitDoors[i];
@@ -68,6 +68,7 @@ void Minion::action(Batiment* batiment){
 			{
 				this->move(batiment, closestExit->getX(),closestExit->getY());
 				batiment->escapeMinion();
+				//cout<<"Je s'appelle groot"<<endl;
 				/*if (batiment->getRemainingMinions() == 0)
 					exit(0); // On sort quand il trouve la sortie*/
 			}
@@ -246,7 +247,7 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end)
 
 	 		int cost;
 	 		if(child[i]->getState()==minion){
-	 			cost = 5;
+	 			cost = 1;
 	 		}else{
 	 			cost = 1;
 	 		}
@@ -308,7 +309,7 @@ void Minion::idle(){
 	
 }
 void Minion::panik(Batiment* batiment){
-	srand(clock());
+//	srand(clock());
 	this->flagPanik = true;
 	int deplacement = (rand() % 2 == 0) ? -1 : 1;
 	int direction = (rand() % 2);

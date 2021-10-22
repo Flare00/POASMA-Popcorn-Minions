@@ -3,7 +3,6 @@
 
 #include <cstdlib>
 #include <ctime>
-
 #include "case.h"
 #include "agent.h"
 #include <vector>
