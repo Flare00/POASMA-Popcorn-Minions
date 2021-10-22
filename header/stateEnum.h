@@ -4,6 +4,7 @@
 enum StateEnum{
 	empty,
 	wall,
+	wallWood,
 	flame,
 	minion,
 	exitDoor,

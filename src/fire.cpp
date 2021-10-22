@@ -39,6 +39,7 @@ void Fire::propagate(Case * emplacement,Batiment * batiment){
 					exit(0);
 				break;
 			case StateEnum::empty :
+			case StateEnum::wallWood :
 				emplacement->setState(StateEnum::flame);
 				emplacement->setAgent(new Fire(emplacement->getX(), emplacement->getY()));
 				break;
