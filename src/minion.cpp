@@ -1,12 +1,15 @@
 #include "minion.h"
+
 #include "case.h"
 #include "batiment.h"
 #include <iostream>
 #include <algorithm>
 
-Minion::Minion(int x, int y){
+Minion::Minion(int x, int y, int seed){
 	this->pos_x = x;
 	this->pos_y = y;
+
+	this->mind = new Mind(seed);
 }
 
 void Minion::action(Batiment* batiment){

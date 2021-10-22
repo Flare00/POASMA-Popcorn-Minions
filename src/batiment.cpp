@@ -48,7 +48,7 @@
 			int j = rand()%y;
 			if(grid[i][j]->getState() == StateEnum::empty){
 				grid[i][j]->setState( StateEnum::minion);
-				grid[i][j]->setAgent((Agent*)new Minion(i,j));
+				grid[i][j]->setAgent((Agent*)new Minion(i,j,rand()));
 				putted++;
 			}
 		}

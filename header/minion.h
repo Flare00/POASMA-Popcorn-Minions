@@ -3,7 +3,7 @@
 
 #include <cstdlib>
 #include <ctime>
-
+#include "Mind.hpp"
 #include "case.h"
 #include "agent.h"
 #include <vector>
@@ -18,8 +18,9 @@ private:
 
 	Case * current;
 	Case * goal;
+	Mind* mind;
 public:
-	Minion(int x, int y);
+	Minion(int x, int y, int seed);
 	virtual void action(Batiment* batiment);
 	void move(Batiment* batiment, int x, int y);
 	int calculeHValue(Case * currentCase, Case* goal);
