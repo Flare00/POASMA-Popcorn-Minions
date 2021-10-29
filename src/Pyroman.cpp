@@ -8,12 +8,14 @@ using namespace std;
 Pyroman::Pyroman(int x,int y):Minion(x,y){}
 
 
-void Pyroman::move(Batiment* batiment, int x, int y){
+bool Pyroman::move(Batiment* batiment, int x, int y){
+	bool moved = false;
 	Case* emplacement = batiment->getCase(x,y); //la position donnée en entrer
 	if (emplacement != NULL) {
 		Case* currentCase = batiment->getCase(this->getX(), this->getY());// ma position actuelle qui change  
 		switch (emplacement->getState()) {
 			case StateEnum::empty :
+							moved=true;
 				emplacement->setState(StateEnum::pyroman);
 				emplacement->setAgent(this);
 				this->setX(x);
@@ -22,37 +24,47 @@ void Pyroman::move(Batiment* batiment, int x, int y){
 				currentCase->setAgent(NULL);
 				break;
 			case StateEnum::flame :
-				emplacement->setState(StateEnum::popCorn);
+				moved = true;
 				delete emplacement->getAgent();
+				emplacement->setState(StateEnum::pyroman);
+				emplacement->setAgent(this);
+				this->setX(x);
+				this->setY(y);
 				currentCase->setState(StateEnum::empty);
 				currentCase->setAgent(NULL);
-				delete this;
-				break;
 		}
 	}
+	return moved;
 }
 
 
 void Pyroman::action(Batiment* batiment){
-	int x = this->getX();
-	int y = this->getY();
 
-	this->flagPyroman = true;
 	Fire* f;
 
+	int deplacement = (rand() % 2 == 0) ? -1 : 1;
+	int direction = (rand() % 4);
+	bool moved = false;
 
-	int deplacementX = (rand() % 2 == 0) ? -1 : 1;
-	int deplacementY = (rand() % 2 == 0) ? -1 : 1;
-	int direction = (rand() % 2);
-	//diagonales
-	//this->move(batiment, this->getX() + deplacementX, this->getY() + deplacementY);
-	//haut bas 
-	if (direction == 0) {	
-		this->move(batiment, this->getX(), this->getY() + deplacementY);
-		f->Fire::action(batiment);
+	Case * emplacement = batiment->getCase(this->getX(), this->getY());
+	switch(direction){
+		case 0:
+			moved=this->move(batiment, this->getX(),this->getY()+1);
+		break;
+		case 1:
+			moved=this->move(batiment, this->getX()+1,this->getY());
+		break;
+		case 2:
+			moved=this->move(batiment, this->getX(),this->getY()-1);
+		break;
+		case 3:
+			moved=this->move(batiment, this->getX()-1,this->getY());
+		break;
 	}
-	else{
-		this->move(batiment, this->getX() + deplacementX, this->getY());	
-		f->Fire::action(batiment);
+	if(moved){
+		emplacement->setState(StateEnum::flame);
+		f = new Fire(emplacement->getX(), emplacement->getY());
+		emplacement->setAgent(f);
+		f->pause();
 	}
 }

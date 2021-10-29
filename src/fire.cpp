@@ -11,18 +11,22 @@ Fire::Fire(int x, int y){
 	this->pos_y = y;
 }
 void Fire::action(Batiment * batiment){
-	if (rand() % PROPAGATION_CHANCE == 0) {
-		this->propagate(batiment->getCase(this->getX() - 1, this->getY()) ,batiment);
-	}
+	if(pauseUnTour){
+		this->pauseUnTour = false;
+	} else {
+		if (rand() % PROPAGATION_CHANCE == 0) {
+			this->propagate(batiment->getCase(this->getX() - 1, this->getY()) ,batiment);
+		}
 
-	if (rand() % PROPAGATION_CHANCE == 0) {
-		this->propagate(batiment->getCase(this->getX() + 1, this->getY()),batiment);
-	}
-	if (rand() % PROPAGATION_CHANCE == 0) {
-		this->propagate(batiment->getCase(this->getX(), this->getY() - 1),batiment);
-	}
-	if (rand() % PROPAGATION_CHANCE == 0) {
-		this->propagate(batiment->getCase(this->getX(), this->getY() + 1),batiment);
+		if (rand() % PROPAGATION_CHANCE == 0) {
+			this->propagate(batiment->getCase(this->getX() + 1, this->getY()),batiment);
+		}
+		if (rand() % PROPAGATION_CHANCE == 0) {
+			this->propagate(batiment->getCase(this->getX(), this->getY() - 1),batiment);
+		}
+		if (rand() % PROPAGATION_CHANCE == 0) {
+			this->propagate(batiment->getCase(this->getX(), this->getY() + 1),batiment);
+		}	
 	}
 }
 
@@ -46,3 +50,9 @@ void Fire::propagate(Case * emplacement,Batiment * batiment){
 		}
 	}
 }
+
+void Fire::pause(){
+	this->pauseUnTour=true;
+}
+
+

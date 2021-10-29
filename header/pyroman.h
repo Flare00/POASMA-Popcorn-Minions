@@ -11,7 +11,7 @@ class Pyroman : public Minion{
 		bool flagPyroman;
 	public:
 		Pyroman(int x,int y);
-		void move(Batiment* batiment, int x, int y);
+		bool move(Batiment* batiment, int x, int y);
 		virtual void action(Batiment* batiment);
 };
 #endif

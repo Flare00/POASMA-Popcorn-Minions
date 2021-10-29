@@ -22,7 +22,7 @@ public:
 	//Minion();
 	Minion(int x, int y);
 	virtual void action(Batiment* batiment);
-	void move(Batiment* batiment, int x, int y);
+	bool move(Batiment* batiment, int x, int y);
 	int calculeHValue(Case * currentCase, Case* goal);
 	Case* chooseBestCase(vector<Case *> openList);
 	vector<Case *> rebuildPath(Case * c);

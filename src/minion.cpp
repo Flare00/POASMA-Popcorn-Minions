@@ -280,12 +280,14 @@ vector<Case *> Minion::aStar(Batiment* b,Case*  begin, Case* end)
 
 
 }
-void Minion::move(Batiment* batiment, int x, int y){
+bool Minion::move(Batiment* batiment, int x, int y){
+	bool moved = false;
 	Case* emplacement = batiment->getCase(x,y);
 	if (emplacement != NULL) {
 		Case* currentCase = batiment->getCase(this->getX(), this->getY());
 		switch (emplacement->getState()) {
 			case StateEnum::empty :
+				moved=true;
 				emplacement->setState(StateEnum::minion);
 				emplacement->setAgent(this);
 				this->setX(x);
@@ -294,6 +296,7 @@ void Minion::move(Batiment* batiment, int x, int y){
 				currentCase->setAgent(NULL);
 				break;
 			case StateEnum::flame :
+				moved=true;
 				emplacement->setState(StateEnum::popCorn);
 				delete emplacement->getAgent();
 				currentCase->setState(StateEnum::empty);
@@ -301,12 +304,14 @@ void Minion::move(Batiment* batiment, int x, int y){
 				delete this;
 				break;
 			case StateEnum::exitDoor :
+				moved=true;
 				currentCase->setState(StateEnum::empty);
 				currentCase->setAgent(NULL);
 				delete this;
 				break;
 		}
 	}
+	return moved;
 }
 void Minion::idle(){
 	
