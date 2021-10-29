@@ -4,6 +4,7 @@
 #include <iostream>
 #include <algorithm>
 
+
 Minion::Minion(int x, int y){
 	this->pos_x = x;
 	this->pos_y = y;
@@ -170,6 +171,8 @@ bool Minion::checkBoundaries(int x, int y, int width, int height)
 {
 	return x>=0&&x<width && y>=0&&y<height;
 }
+
+
 vector<Case *>  Minion::children(Batiment* b,Case* n){
 	vector<Case *>  voisinNonVerfier;
 	int x = n->getX();
@@ -330,9 +333,9 @@ void Minion::moveToward(Batiment* batiment, Case * c){
 	int dx = 0;
 	int dy = 0;
 
-	if(c->getX()>this->getX()){
+	if(c->getX() > this->getX()){
 		dx = 1;
-	}else if(c->getX()<this->getX()){
+	}else if(c->getX() < this->getX()){
 		dx = -1;
 	}
 

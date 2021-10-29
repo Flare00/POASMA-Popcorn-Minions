@@ -2,16 +2,24 @@
 #include "fire.h"
 #include "stateEnum.h"
 #include "minion.h"
+#include "pompier.h"
+#include "pyroman.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstddef>
 #include <time.h>
 #include <iostream>
 #include <vector>
-	Batiment::Batiment(int x, int y, int start_nbminion, int start_nbfire, int nb_exits, int nb_wall){
+
+
+	Batiment::Batiment(int x, int y, int start_nbminion, int start_nbfire,int start_nbPompier,int start_nbPyroman, int nb_exits, int nb_wall){
 		this->escapedMinion = 0;
 		this->start_nbminion = start_nbminion;
 		this->start_nbfire = start_nbfire;
+
+		this->start_nbPompier=start_nbPompier;
+		this->start_nbPyroman=start_nbPyroman;
+
 		this->nb_exits = nb_exits;
 		this->width = x;
 		this->height = y;
@@ -64,7 +72,30 @@
 				putted++;
 			}
 		}
-
+		//Pompier
+		putted = 0;
+		while(putted < start_nbPompier){
+			int i = rand()%x;
+			int j = rand()%y;
+			if(grid[i][j]->getState() == StateEnum::empty){
+				grid[i][j]->setState( StateEnum::pompier);
+				
+				grid[i][j]->setAgent((Agent*)new Pompier(i,j));
+				putted++;
+			}
+		}
+		//Pyroman
+		putted = 0;
+		while(putted < start_nbPyroman){
+			int i = rand()%x;
+			int j = rand()%y;
+			if(grid[i][j]->getState() == StateEnum::empty){
+				grid[i][j]->setState(StateEnum::pyroman);
+				
+				grid[i][j]->setAgent((Agent*)new Pyroman(i,j));
+				putted++;
+			}
+		}
 		
 	}
 	
@@ -130,6 +161,10 @@
 	{
 		std::vector<Agent*> minions;
 		std::vector<Agent*> fires;
+		
+		std::vector<Agent*> pompier;
+		std::vector<Agent*> pyroman;
+
 		for(int i = 0; i < this->getWidth() ; i++)
 		{
 			for(int j = 0; j < this->getHeight() ; j++)
@@ -153,6 +188,42 @@
 		for (int i = 0; i < size; i++) {
 			minions[i]->action(this);
 		}
+		/*************/
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				Agent* agent = this->grid[x][y]->getAgent();
+				if (agent != NULL) {
+					if (this->grid[x][y]->getState() == StateEnum::pyroman) {
+						pyroman.push_back(agent);
+					}
+				}
+			}
+		}
+
+		size = pyroman.size();
+		for (int i = 0; i < size; i++) {
+			pyroman[i]->action(this);
+		}
+		/*********/
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				Agent* agent = (Minion*)this->grid[x][y]->getAgent();
+				if (agent != NULL) {
+					if (this->grid[x][y]->getState() == StateEnum::pompier) {
+						pompier.push_back(agent);
+					}
+				}
+			}
+		}
+
+		size = pompier.size();
+		for (int i = 0; i < size; i++) {
+			pompier[i]->action(this);
+		}
+
+
+
+		
 
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {

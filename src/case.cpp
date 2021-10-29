@@ -30,7 +30,7 @@ StateEnum Case::getState(){
 void Case::setState(StateEnum state){
 	this->state = state;
 }
-Agent *Case::getAgent(){
+Agent* Case::getAgent(){
 	return this->agent;
 }
 void Case::setAgent(Agent *agent){

@@ -10,13 +10,13 @@ class Batiment
 private:
 	int width;
 	int height;
-	int start_nbminion, start_nbfire;
+	int start_nbminion, start_nbfire,start_nbPyroman,start_nbPompier;
 	int nb_exits;
 	int escapedMinion;
 	Case*** grid;
 
 public:
-	Batiment(int x, int y, int start_nbminion, int start_nbfire, int nb_exits ,int nb_wall);
+	Batiment(int x, int y, int start_nbminion, int start_nbfire,int start_nbPompier,int start_nbPyroman,int nb_exits ,int nb_wall);
 	~Batiment();
 
 	std::vector<Case *> getExitDoors(); //Return all exit cases;

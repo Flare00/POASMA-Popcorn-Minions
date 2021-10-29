@@ -1,12 +1,17 @@
 #ifndef PYROMANE_H
 #define PYROMANE_H
 
-class Pompier: public Minion{
-	//protected:
+#include "case.h"
+#include "minion.h"
 
+class Pompier: public Minion{
+	protected:
+		bool flagPompier;
+		int porteeLance = 5;
 	public:
-		Pompier();
-		void ettientFeu();
-		virtual void action(Batiment* batiment);//car elle est défini
+		Pompier(int x,int y);
+		void eteintFeu(Case* c,Batiment* batiment);
+		void move(Batiment* batiment, int x, int y);
+		virtual void action(Batiment* batiment);
 };
 #endif

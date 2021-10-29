@@ -9,15 +9,17 @@
 using namespace std;
 
 class Minion : public Agent{
-private:
+protected:
 	bool alive = true;
 	bool escape = false;
 	bool flagPanik = false;
+	short int direction = 0; //0 : Nord, 1 = Est, 2 = Sud, 3 = Ouest
 	vector<Case> path;
 
 	Case * current;
 	Case * goal;
 public:
+	//Minion();
 	Minion(int x, int y);
 	virtual void action(Batiment* batiment);
 	void move(Batiment* batiment, int x, int y);
