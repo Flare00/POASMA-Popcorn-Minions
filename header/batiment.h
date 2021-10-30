@@ -5,22 +5,24 @@
 #include "etage.h"
 
 using namespace std;
+
 struct liaisonEntreeSortie
 {
 	Case* entree;
 	Case* sortie;
 };
+
 class Batiment {
 private:
 	vector<Etage*> etages;
 	vector<liaisonEntreeSortie> liaison;
 public:
-	Batiment(vector<Etage> etages);
+	Batiment(vector<Etage> e, vector<liaisonEntreeSortie> l);
 	~Batiment();
 
 	vector<Etage*> getEtages();
 	vector<liaisonEntreeSortie> getLiaisonEntreesSorties();
-	Case* getSortieLiee(Case* entree); //Recupere une des sortie liee a une entree 
+	Case* getEntreeLiee(Case* sortie); //Recupere une des sortie liee a une entree 
 }
 
 #endif
