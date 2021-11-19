@@ -14,7 +14,7 @@ vector<Vec3> objModelInfo::getNormals()
 {
     return this->normals;
 }
-vector<Vec3> objModelInfo::getFaces()
+vector<vector<int>> objModelInfo::getFaces()
 {
     return this->faces;
 }
@@ -54,13 +54,27 @@ void objModelInfo::fillMyData(string path_file)
             // Triangle Faces
             if (allWordsLine.size() == 4)
             { // 4 car je compte le "f" en plus
-                this->faces.push_back(Vec3((float)(allWordsLine[1][0] - '0'), (float)(allWordsLine[2][0] - '0'), (float)(allWordsLine[3][0] - '0')));
+                vector<int> tmpVect;
+                tmpVect.push_back(allWordsLine[1][0] - '0');
+                tmpVect.push_back(allWordsLine[2][0] - '0');
+                tmpVect.push_back(allWordsLine[3][0] - '0');
+                this->faces.push_back(tmpVect);
             }
             // Quad Faces
             if (allWordsLine.size() == 5)
             { // 5 car je compte le "f" en plus
-                this->faces.push_back(Vec3((float)(allWordsLine[1][0] - '0'), (float)(allWordsLine[2][0] - '0'), (float)(allWordsLine[3][0] - '0')));
-                this->faces.push_back(Vec3((float)(allWordsLine[4][0] - '0'), (float)(allWordsLine[2][0] - '0'), (float)(allWordsLine[3][0] - '0')));
+                vector<int> tmpVect;
+                
+                tmpVect.push_back(allWordsLine[1][0] - '0');
+                tmpVect.push_back(allWordsLine[2][0] - '0');
+                tmpVect.push_back(allWordsLine[3][0] - '0');
+                this->faces.push_back(tmpVect);
+
+                tmpVect.clear();
+                tmpVect.push_back(allWordsLine[4][0] - '0');
+                tmpVect.push_back(allWordsLine[2][0] - '0');
+                tmpVect.push_back(allWordsLine[3][0] - '0');
+                this->faces.push_back(tmpVect);
             }
         }
     }
@@ -82,7 +96,7 @@ void objModelInfo::printMyData()
         cout << "vn " << normals[i][0] << " " << normals[i][1] << " " << normals[i][2] << endl;
     }
     // Print Triangle ("f v1 v2 v3")
-    for (int i = 0, max = this->faces.size(); i < max; i++)
+    for (int i = 0, maxSize1 = this->faces.size(); i < maxSize1; i++)
     {
         cout << "f " << faces[i][0] << " " << faces[i][1] << " " << faces[i][2] << endl;
     }

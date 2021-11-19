@@ -14,7 +14,7 @@ class objModelInfo
 private:
     vector<Vec3> vertices; // liste : v [Position] (X,Y,Z)
     vector<Vec3> normals;  // liste : vn [Normal] (X,Y,Z)
-    vector<Vec3> faces;    // liste : f [Triangles] (v1[i],v2[i],v3[i])
+    vector<vector<int>> faces;    // liste : f [Triangles] (v1[i],v2[i],v3[i])
 public:
     // Construct & Destruct
     objModelInfo();
@@ -23,7 +23,7 @@ public:
     // Getters
     vector<Vec3> getVertices();
     vector<Vec3> getNormals();
-    vector<Vec3> getFaces();
+    vector<vector<int>> getFaces();
 
     // OBJ files
     void fillMyData(string path_file);
