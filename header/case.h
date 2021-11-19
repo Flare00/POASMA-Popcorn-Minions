@@ -1,11 +1,15 @@
 #ifndef CASE_H
 #define CASE_H
 
+#include <vector>
 #include "stateEnum.h"
-#include "agent.h"
+class Agent;
+using namespace std;
+
 class Case{
 private : 
 	StateEnum state;
+	SubStateEnum subState;
 	Agent * agent;
 	int pos_x, pos_y;
 	int f,g,h;
@@ -26,6 +30,8 @@ public :
 	
 	StateEnum getState();
 	void setState(StateEnum state);
+	SubStateEnum getSubState();
+	void setSubState(SubStateEnum subState);
 	Agent* getAgent();
 	void setAgent(Agent* agent);
 

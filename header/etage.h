@@ -1,24 +1,39 @@
 #ifndef ETAGE_H
 #define ETAGE_H
 
-#include "minion.h"
-#include "fire.h"
+#include <vector>
 #include "case.h"
+class Minion;
+class Fire;
 
-class Etage{
-	private :
-		vector<Minions*> minions;
-		vector<Fire*> fires;
-		vector<vector<Case*>> cases;
-	public :
-		Etage(int x, int y /*...etc...*/);
-		Etage(vector<vector<Case*>> cases);		
-		~Etage();
-		Case * getCase(int x, int y);
-		
-		vector<vector<Case*>> getCases();
-		vector<Minions*> getMinions();
-		vector<Fire*> getFires();
-}
+using namespace std;
+class Etage {
+private:
+	int width, height;
+	vector<Minion*> minions;
+	vector<Fire*> fires;
+	vector<vector<Case*>> cases;
+	vector<Case*> sorties;
+	vector<Case*> entrees;
+public:
+	Etage(int x, int y /*...etc...*/);
+	Etage(vector<Minion*> minions, vector<Fire*> fires, vector<vector<Case*>> cases, vector<Case*> entrees, vector<Case*> sorties);
+	~Etage();
+	Case* getCase(int x, int y);
+
+	vector<vector<Case*>> getCases();
+	vector<vector<Case*>> getGrid();
+	vector<Minion*> getMinions();
+	vector<Fire*> getFires();
+	vector<Case*> getExitDoors();
+	vector<Case*> getEntryDoors();
+	int getWidth();
+	int getHeight();
+	void escapeMinion();
+	void burnedMinion();
+	int getRemainingMinions();
+
+
+};
 
 #endif

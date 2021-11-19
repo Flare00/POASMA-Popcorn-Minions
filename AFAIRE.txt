@@ -1,0 +1,5 @@
+Refactor TODO :
+- Minion (gestion de interaction avec l'ancien batiment  && subState)
+- Pompier (gestion de interaction avec l'ancien batiment && subState)
+- Pyroman (gestion de interaction avec l'ancien batiment && subState)
+- DoAction (Simulation)

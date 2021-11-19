@@ -1,46 +1,47 @@
 #ifndef STATE_ENUM_H
 #define STATE_ENUM_H
 
-enum StateEnum{
+enum StateEnum {
 	empty,
 	wall,
 	flame,
 	minion,
+	enterDoor,
 	exitDoor,
 	popCorn
 };
 
-enum SubStateEnum{
-	empty,
+enum SubStateEnum {
+	subEmpty,
 	wallWood,
 	pompier,
 	pyroman
-}
+};
 
-bool isSubstateOf(StateEnum state, SubStateEnum subState){
+/*static bool isSubstateOf(StateEnum state, SubStateEnum subState) {
 	bool result = false;
 	switch(state){
-		case empty :
-		case exitDoor :
-		case popCorn :
-		case flame :
-			if(subState == SubStateEnum.empty){
+	case StateEnum::empty :
+		case StateEnum::exitDoor :
+		case StateEnum::popCorn :
+		case StateEnum::flame :
+			if(subState == SubStateEnum::subEmpty){
 				result = true;
 			}
 			break;
-		case wall :
-			if(subState == SubStateEnum.empty || subState == SubStateEnum.wallWood){
+		case StateEnum::wall :
+			if(subState == SubStateEnum::subEmpty || subState == SubStateEnum::wallWood){
 				result = true;
 			}
 			break;
-		case minion :
-			if(subState == SubStateEnum.empty || subState == SubStateEnum.pompier|| subState == SubStateEnum.pyroman){
+		case StateEnum::minion :
+			if(subState == SubStateEnum::subEmpty || subState == SubStateEnum::pompier|| subState == SubStateEnum::pyroman){
 				result = true;
 			}
 			break;
 
 	}
 	return result;
-}
+}*/
 
 #endif

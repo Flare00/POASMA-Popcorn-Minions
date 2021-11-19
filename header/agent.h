@@ -1,6 +1,7 @@
 #ifndef AGENT_H
 #define AGENT_H
 
+#include "batiment.h"
 class Batiment;
 class Agent
 {
@@ -15,9 +16,7 @@ public:
 	int getY();
 	void setX(int x);
 	void setY(int y);
-
-	
-	virtual void action(Batiment* batiment) = 0;
+	virtual void action(Etage* etage) =0;
 };
 
 #endif

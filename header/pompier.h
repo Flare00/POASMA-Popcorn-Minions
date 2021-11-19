@@ -1,7 +1,6 @@
-#ifndef PYROMANE_H
-#define PYROMANE_H
+#ifndef POMPIER_H
+#define POMPIER_H
 
-#include "case.h"
 #include "minion.h"
 
 class Pompier: public Minion{
@@ -10,8 +9,8 @@ class Pompier: public Minion{
 		int porteeLance = 5;
 	public:
 		Pompier(int x,int y);
-		void eteintFeu(Case* c,Batiment* batiment);
-		void move(Batiment* batiment, int x, int y);
-		virtual void action(Batiment* batiment);
+		void eteintFeu(Case* c, Etage* etage);
+		void move(Etage* etage, int x, int y);
+		virtual void action(Etage* etage);
 };
 #endif

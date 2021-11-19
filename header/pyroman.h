@@ -1,7 +1,6 @@
 #ifndef PYROMAN_H
 #define PYROMAN_H
-
-#include "case.h"
+#include "fire.h"
 #include "minion.h"
 
 using namespace std;
@@ -11,7 +10,7 @@ class Pyroman : public Minion{
 		bool flagPyroman;
 	public:
 		Pyroman(int x,int y);
-		bool move(Batiment* batiment, int x, int y);
-		virtual void action(Batiment* batiment);
+		bool move(Etage* etage, int x, int y);
+		virtual void action(Etage* etage);
 };
 #endif

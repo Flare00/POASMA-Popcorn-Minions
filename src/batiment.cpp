@@ -1,5 +1,5 @@
-#include <stdlib>
 #include <ctime>
+#include <random>
 #include "batiment.h"
 
 using namespace std;
@@ -43,7 +43,7 @@ Case *Batiment::getEntreeLiee(Case *sortie)
 
 	if (sizeListEntree == 0)
 	{
-		return null;
+		return NULL;
 	}
 	else
 	{
