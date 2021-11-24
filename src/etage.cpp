@@ -179,6 +179,9 @@ Case* Etage::enter(Minion* minion, Case* entree, SubStateEnum substate)
 			distanceFactor++;
 			counter = 0;
 		}
+		if (counter > 1000) {
+			return NULL;
+		}
 	} while (!found);
 	this->minions.push_back(minion);
 	return laCase;
@@ -192,11 +195,10 @@ Case* Etage::exit(Minion* minion, Case* sortie, SubStateEnum substate)
 		if (this->liaisons[i].sortie.porte == sortie) {
 			found = true;
 
-			if (this->liaisons[i].exitOnly) {
-				this->kill((Agent*)minion, true);
+			if (this->liaisons[i].exitOnly || this->liaisons[i].entryOnly) {
+				this->removeOneAgent((Agent*)minion, true);
 			}
 			else {
-
 				res = this->liaisons[i].entree.etage->enter(minion, this->liaisons[i].entree.porte, substate);
 				this->removeOneAgent((Agent*)minion, true);
 			}

@@ -27,19 +27,23 @@ public:
 	{
 		EtagePorte entree;
 		EtagePorte sortie;
-		bool exitOnly = false;
-		bool entryOnly = false;
+		bool exitOnly;
+		bool entryOnly;
 		liaisonEntreeSortie(EtagePorte entree, EtagePorte sortie) {
 			this->entree = entree;
 			this->sortie = sortie;
+			this->entryOnly = false;
+			this->exitOnly = false;
 		}
 		liaisonEntreeSortie(EtagePorte val, bool isEntree) {
 			this->entree = val;
 			this->sortie = val;
 			if (isEntree) {
 				this->entryOnly = true;
+				this->exitOnly = false;
 			}
 			else {
+				this->entryOnly = false;
 				this->exitOnly = true;
 			}
 		}

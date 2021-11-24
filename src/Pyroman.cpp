@@ -62,9 +62,8 @@ void Pyroman::action(Etage* etage) {
 		break;
 	}
 	if (moved) {
-		emplacement->setState(StateEnum::flame);
-		f = new Fire(emplacement->getX(), emplacement->getY());
-		emplacement->setAgent(f);
+		Fire* f = new Fire(emplacement->getX(), emplacement->getY());
+		etage->addFire(emplacement,f );
 		f->pause();
 	}
 }

@@ -95,7 +95,6 @@ void draw() {
 	if(duration>= 500){
 		last = chrono::high_resolution_clock::now();
 		s->doAction();
-		cout<<"action"<<endl;
 	}
 	drawGrid(s);
 }

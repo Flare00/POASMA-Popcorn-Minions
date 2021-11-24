@@ -316,7 +316,9 @@ bool Minion::move(Etage* etage, int x, int y) {
 			if (tmp != NULL) {
 				this->setX(tmp->getX());
 				this->setY(tmp->getY());
-
+			}
+			else {
+				etage->kill((Agent*)this, true);
 			}
 			//etage->kill((Agent*)this, true);
 			break;

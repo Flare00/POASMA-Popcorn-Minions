@@ -1,7 +1,6 @@
 #include"pompier.h"
 #include <iostream>
 using namespace std;
-#define PROPAGATION_CHANCE 3
 
 Pompier::Pompier(int x, int y) :Minion(x, y) {}
 
@@ -18,7 +17,6 @@ void Pompier::eteintFeu(Case* c, Etage* etage) {
 	}
 }
 void Pompier::move(Etage* etage, int x, int y) {
-	cout << "Move pompier" << endl;
 		Case* emplacement = etage->getCase(x, y); //la position donnée en entrer
 		if (emplacement != NULL) {
 			Case* currentCase = etage->getCase(this->getX(), this->getY());// ma position actuelle 
@@ -43,12 +41,6 @@ void Pompier::move(Etage* etage, int x, int y) {
 				currentCase->setAgent(NULL);
 				this->popcorn(etage);
 				break;
-			case StateEnum::exitDoor:
-				currentCase->setState(StateEnum::empty);
-				currentCase->setSubState(SubStateEnum::subEmpty);
-				currentCase->setAgent(NULL);
-				etage->exit((Minion*)this, emplacement, SubStateEnum::pompier);
-				break;
 			}
 	}
 }
@@ -59,33 +51,24 @@ void Pompier::action(Etage* etage) {
 	//this->move(etage, dx, dy);
 	int direction = (rand() % 4);
 	this->direction = direction;
+	for (int i = 0; i < this->porteeLance; i++) {
+		this->eteintFeu(etage->getCase(this->getX(), this->getY() + i), etage);
+		this->eteintFeu(etage->getCase(this->getX() + i, this->getY()), etage);
+		this->eteintFeu(etage->getCase(this->getX(), this->getY() - i), etage);
+		this->eteintFeu(etage->getCase(this->getX() - i, this->getY()), etage);
+	}
 	switch (direction) {
 	case 0:
 		this->move(etage, this->getX(), this->getY() + 1);
-		for (int i = 0; i < this->porteeLance; i++) {
-			this->eteintFeu(etage->getCase(this->getX(), this->getY() + i), etage);
-		}
-
 		break;
 	case 1:
 		this->move(etage, this->getX() + 1, this->getY());
-		for (int i = 0; i < this->porteeLance; i++) {
-			this->eteintFeu(etage->getCase(this->getX() + i, this->getY()), etage);
-		}
 		break;
 	case 2:
 		this->move(etage, this->getX(), this->getY() - 1);
-		for (int i = 0; i < this->porteeLance; i++) {
-			this->eteintFeu(etage->getCase(this->getX(), this->getY() - i), etage);
-		}
-
 		break;
 	case 3:
 		this->move(etage, this->getX() - 1, this->getY());
-		for (int i = 0; i < this->porteeLance; i++) {
-			
-			this->eteintFeu(etage->getCase(this->getX() - i, this->getY()), etage);
-		}
 		break;
 	}
 
