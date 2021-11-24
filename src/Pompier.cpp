@@ -5,7 +5,7 @@
 #include "fire.h"
 #include <iostream>
 using namespace std;
-#define PROPAGATION_CHANCE 3
+
 
 Pompier::Pompier(int x,int y):Minion(x,y){}
 										  					
@@ -52,40 +52,34 @@ void Pompier::move(Batiment* batiment,int x, int y){
 
 
 void Pompier::action(Batiment* batiment){
+	
+	//pour avoir un champ de protection autour du pompier 
+	for(int i = 0; i < this->porteeLance; i++){
+		this->eteintFeu(batiment->getCase(this->getX(),this->getY() +i), batiment);
+		this->eteintFeu(batiment->getCase(this->getX(),this->getY() -i), batiment);
+		this->eteintFeu(batiment->getCase(this->getX()+i,this->getY()), batiment);
+		this->eteintFeu(batiment->getCase(this->getX()-i,this->getY()), batiment);
+	}
 
-	//this->move(batiment, dx, dy);
 	int direction = (rand() % 4);
 		this->direction = direction;
-	switch(direction){
-		case 0:
+		switch(direction){
+		case 0:		
 			this->move(batiment, this->getX(),this->getY()+1);
-			for(int i = 0; i < this->porteeLance; i++){
- 				this->eteintFeu(batiment->getCase(this->getX(),this->getY() +i), batiment);
-			}
-
 		break;
 		case 1:
-			this->move(batiment, this->getX()+1,this->getY());
-			for(int i = 0; i < this->porteeLance; i++){
- 				this->eteintFeu(batiment->getCase(this->getX()+i,this->getY()), batiment);
-			}
+			
+			this->move(batiment, this->getX(),this->getY()-1);
 		break;
 		case 2:
-			this->move(batiment, this->getX(),this->getY()-1);
-			for(int i = 0; i < this->porteeLance; i++){
- 				this->eteintFeu(batiment->getCase(this->getX(),this->getY() -i), batiment);
-			}
+				
+			this->move(batiment, this->getX()+1,this->getY());
 
 		break;
 		case 3:
+			
 			this->move(batiment, this->getX()-1,this->getY());
-			for(int i = 0; i < this->porteeLance; i++){
- 				this->eteintFeu(batiment->getCase(this->getX()-i,this->getY()), batiment);
-			}
 		break;
 	}
 
-
-
-	
 }

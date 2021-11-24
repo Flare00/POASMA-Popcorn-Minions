@@ -13,5 +13,6 @@ class Pyroman : public Minion{
 		Pyroman(int x,int y);
 		bool move(Batiment* batiment, int x, int y);
 		virtual void action(Batiment* batiment);
+		void creeFeux(Case* c,Batiment* batiment);
 };
 #endif
