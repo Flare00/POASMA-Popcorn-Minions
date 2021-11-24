@@ -76,7 +76,7 @@ Batiment* Simulation::generateBatiment(int nbEtages, int largeur, int hauteur, N
 			if (counterPyro < nbPyroMinions) {
 				int x = rand() % largeur, y = rand() % hauteur;
 				if (cases[x][y]->getState() == StateEnum::empty) {
-					Pyroman* m = new Pyroman(x, y);
+					Pyromane* m = new Pyromane(x, y);
 					cases[x][y]->setState(StateEnum::minion);
 					cases[x][y]->setSubState(SubStateEnum::pyroman);
 					cases[x][y]->setAgent(m);
@@ -148,14 +148,11 @@ Batiment* Simulation::generateBatiment(int nbEtages, int largeur, int hauteur, N
 	}
 
 	for (int i = nbEtages - 1; i >= 0; i--) {
-		cout << "I : " << i << endl;
 		if (i == nbEtages - 1) {
 			for (int j = 0, max = allEntree[i].size(); j < max; j++) {
 				Etage::liaisonEntreeSortie l(allEntree[i][j], true);
 				link.push_back(l);
 				l.sortie.etage->addLiaisonEntreeSortie(l);
-				cout << "Entry only" << endl;
-
 			}
 		}
 
@@ -163,8 +160,6 @@ Batiment* Simulation::generateBatiment(int nbEtages, int largeur, int hauteur, N
 			for (int j = 0, max = allSortie[i].size(); j < max; j++) {
 				Etage::liaisonEntreeSortie l( allSortie[i][j], false);
 				link.push_back(l);
-				cout << "Exit only" << endl;
-
 			}
 		}
 		else
@@ -174,8 +169,6 @@ Batiment* Simulation::generateBatiment(int nbEtages, int largeur, int hauteur, N
 					Etage::liaisonEntreeSortie l(allEntree[i - 1][k], allSortie[i][j]);
 					link.push_back(l);
 					l.sortie.etage->addLiaisonEntreeSortie(l);
-					cout << "Both" << endl;
-
 				}
 			}
 		}
@@ -195,11 +188,9 @@ void Simulation::doAction()
 		vector<Minion*> minions = etages[i]->getMinions();
 		vector<Fire*> fires = etages[i]->getFires();
 		for (int j = 0, maxJ = minions.size(); j < maxJ; j++) {
-			cout << "Action Minion : " << maxJ << endl;
 			minions[j]->action(etages[i]);
 		}
 		for (int j = 0, maxJ = fires.size(); j < maxJ; j++) {
-			//cout << "Action Fire" << endl;
 			fires[j]->action(etages[i]);
 		}
 	}

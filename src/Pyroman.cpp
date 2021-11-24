@@ -1,10 +1,10 @@
-#include"pyroman.h"
+#include"pyromane.h"
 
 using namespace std;
-Pyroman::Pyroman(int x, int y) :Minion(x, y) {}
+Pyromane::Pyromane(int x, int y) :Minion(x, y) {}
 
 
-bool Pyroman::move(Etage* etage, int x, int y) {
+bool Pyromane::move(Etage* etage, int x, int y) {
 	bool moved = false;
 	Case* emplacement = etage->getCase(x, y); //la position donnée en entrer
 	if (emplacement != NULL) {
@@ -38,7 +38,7 @@ bool Pyroman::move(Etage* etage, int x, int y) {
 }
 
 
-void Pyroman::action(Etage* etage) {
+void Pyromane::action(Etage* etage) {
 
 	Fire* f;
 

@@ -6,7 +6,7 @@
 #include <random>
 
 #include "fire.h"
-#include "pyroman.h"
+#include "pyromane.h"
 #include "pompier.h"
 #include "batiment.h"
 
