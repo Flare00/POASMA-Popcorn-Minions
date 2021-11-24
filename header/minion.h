@@ -19,6 +19,7 @@ protected:
 public:
 	//Minion();
 	Minion(int x, int y);
+	~Minion();
 	virtual void action(Etage* etage);
 	bool move(Etage* etage, int x, int y);
 	int calculeHValue(Case * currentCase, Case* goal);
@@ -33,7 +34,7 @@ public:
 	void moveToward(Etage* etage, Case * c);
 	void idle();
 	void panik(Etage* etage);
-	void popcorn();
+	void popcorn(Etage* etage);
 	
 	vector<Case *> children(Etage* b,Case* n);
 	void setCaseCurrent(Case * c);

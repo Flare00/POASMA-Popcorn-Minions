@@ -7,6 +7,10 @@ Minion::Minion(int x, int y) {
 	this->pos_y = y;
 }
 
+Minion::~Minion()
+{
+}
+
 void Minion::action(Etage* etage) {
 	Case* emplacement = etage->getCase(this->getX(), this->getY());
 	int x = this->getX();
@@ -297,16 +301,17 @@ bool Minion::move(Etage* etage, int x, int y) {
 		case StateEnum::flame:
 			moved = true;
 			emplacement->setState(StateEnum::popCorn);
-			delete emplacement->getAgent();
+			etage->kill(emplacement->getAgent(), false);
 			currentCase->setState(StateEnum::empty);
 			currentCase->setAgent(NULL);
-			delete this;
+			etage->kill((Agent*)this, true);
 			break;
 		case StateEnum::exitDoor:
 			moved = true;
 			currentCase->setState(StateEnum::empty);
 			currentCase->setAgent(NULL);
-			delete this;
+
+			etage->kill((Agent*)this, true);
 			break;
 		}
 	}
@@ -329,8 +334,8 @@ void Minion::panik(Etage* etage) {
 	}
 
 }
-void Minion::popcorn() {
-	delete this;
+void Minion::popcorn(Etage * etage) {
+	etage->kill((Agent*) this, true);
 }
 
 void Minion::moveToward(Etage* etage, Case* c) {

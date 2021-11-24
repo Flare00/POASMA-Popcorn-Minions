@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <chrono>
 #include <string>
-
+#include <unistd.h>
 #include "header/Vec3.h"
 //#include "header/Camera.h"
 //#include "header/Drawgrid.h"
@@ -19,7 +19,7 @@
 
 
 using namespace std;
-bool isSubstateOf(StateEnum state, SubStateEnum subState) {
+/*bool isSubstateOf(StateEnum state, SubStateEnum subState) {
 	bool result = false;
 	switch (state) {
 	case StateEnum::empty:
@@ -43,7 +43,7 @@ bool isSubstateOf(StateEnum state, SubStateEnum subState) {
 
 	}
 	return result;
-}
+}*/
 /*chrono::high_resolution_clock::time_point last = chrono::high_resolution_clock::now();
 
 long int nextUpdate = 0;
@@ -199,68 +199,16 @@ int main(int argc, char** argv) {
 	glutMainLoop();
 	delete bat;*/
 	Simulation* s = new Simulation();
-	Batiment* b = s->getBatiment();
-	vector<Etage*> etages = b->getEtages();
-	for (int i = 0, max = etages.size(); i < max; i++) {
-		Etage* e = etages[i];
-		for (int x = 0; x < 10; x++) {
-			string ligne = "";
-
-			for (int y = 0; y < 10; y++) {
-				Case* c = e->getCase(x, y);
-				switch (c->getState()) {
-				case StateEnum::empty:
-					ligne += "   ";
-					break;
-				case StateEnum::wall:
-					if (isSubstateOf(c->getState(), c->getSubState())) {
-						if (c->getSubState() == SubStateEnum::wallWood) {
-							ligne += " w ";
-						}
-						else {
-							ligne += " W ";
-						}
-					}
-					else {
-						ligne += " X ";
-					}
-					break;
-				case StateEnum::flame:
-					ligne += " F ";
-					break;
-				case StateEnum::minion:
-					if (isSubstateOf(c->getState(), c->getSubState())) {
-						if (c->getSubState() == SubStateEnum::pompier) {
-							ligne += " p ";
-						}
-						else if (c->getSubState() == SubStateEnum::pyroman) {
-							ligne += " P ";
-						}
-						else {
-							ligne += " M ";
-						}
-					}
-					else {
-						ligne += " X ";
-					}
-					break;
-				case StateEnum::enterDoor:
-					ligne += " e ";
-					break;
-				case StateEnum::exitDoor:
-					ligne += " E ";
-
-					break;
-				case StateEnum::popCorn:
-					ligne += " C ";
-					break;
-				}
-			}
-			cout << ligne << endl;
-		}
-		cout << endl << "------"  << endl << endl;
+	s->showBatiment();
+	int i = 0;
+	while (i < 25){
+		sleep(1);
+		s->doAction();
+		cout << endl << endl << "-------------------------------------" << endl << endl;
+		s->showBatiment();
+		i++;
 	}
-
+	
 	delete s;
 	return EXIT_SUCCESS;
 }

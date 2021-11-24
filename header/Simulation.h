@@ -66,6 +66,8 @@ public:
 	int getNbPanikMinions();
 
 	int getNbFire();
+
+	void showBatiment();
 };
 
 #endif

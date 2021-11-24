@@ -18,7 +18,7 @@ enum SubStateEnum {
 	pyroman
 };
 
-/*static bool isSubstateOf(StateEnum state, SubStateEnum subState) {
+static bool isSubstateOf(StateEnum state, SubStateEnum subState) {
 	bool result = false;
 	switch(state){
 	case StateEnum::empty :
@@ -42,6 +42,6 @@ enum SubStateEnum {
 
 	}
 	return result;
-}*/
+}
 
 #endif

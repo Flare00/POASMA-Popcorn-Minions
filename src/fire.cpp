@@ -16,7 +16,6 @@ void Fire::action(Etage * etage){
 		if (rand() % PROPAGATION_CHANCE == 0) {
 			this->propagate(etage->getCase(this->getX() - 1, this->getY()) ,etage);
 		}
-
 		if (rand() % PROPAGATION_CHANCE == 0) {
 			this->propagate(etage->getCase(this->getX() + 1, this->getY()),etage);
 		}
@@ -35,17 +34,19 @@ void Fire::propagate(Case * emplacement, Etage* etage){
 		switch(emplacement->getState()){
 			case StateEnum::minion : 
 				emplacement->setState(StateEnum::popCorn);
-				((Minion*)emplacement->getAgent())->popcorn();
+				((Minion*)emplacement->getAgent())->popcorn(etage);
 				//etage->escapeMinion(); // He escaped to heaven, press F
 				etage->burnedMinion();
 				if(etage->getRemainingMinions()==0)
 					exit(0);
 				break;
 			case StateEnum::empty :
+				etage->addFire(emplacement, new Fire(emplacement->getX(), emplacement->getY()));
+				break;
 			case StateEnum::wall :
 				if (emplacement->getSubState() == SubStateEnum::wallWood) {
 					emplacement->setState(StateEnum::flame);
-					emplacement->setAgent(new Fire(emplacement->getX(), emplacement->getY()));
+					etage->addFire(emplacement, new Fire(emplacement->getX(), emplacement->getY()));
 				}
 				break;
 		}

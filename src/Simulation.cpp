@@ -1,8 +1,11 @@
+#include <iostream>
 #include "Simulation.h"
-
+using namespace std;
 Simulation::Simulation()
 {
-	this->batiment = Simulation::generateBatiment(3, 10, 10, NBbMinionsParam(1, 1, 1), 1, 1, 1, 1, 1);
+	//this->batiment = Simulation::generateBatiment(1, 10, 10, NBbMinionsParam(0, 5, 0), 0, 1, 1, 1, 1);
+	this->batiment = Simulation::generateBatiment(1, 10, 10, NBbMinionsParam(1, 1, 1), 1, 1, 1, 1, 1);
+
 }
 
 Simulation::~Simulation() {
@@ -49,7 +52,7 @@ Batiment* Simulation::generateBatiment(int nbEtages, int largeur, int hauteur, N
 					counterStd++;
 				}
 			}
-			if (counterPomp < nbStdMinions) {
+			if (counterPomp < nbPompMinions) {
 				int x = rand() % largeur, y = rand() % hauteur;
 				if (cases[x][y]->getState() == StateEnum::empty) {
 					Pompier* m = new Pompier(x, y);
@@ -155,6 +158,21 @@ Batiment* Simulation::generateBatiment(vector<Etage*> etages, vector<liaisonEntr
 
 void Simulation::doAction()
 {
+	vector<Etage*> etages = this->batiment->getEtages();
+	for (int i = 0, max = etages.size(); i < max; i++) {
+		vector<Minion*> minions = etages[i]->getMinions();
+		vector<Fire*> fires = etages[i]->getFires();
+		for (int j = 0, maxJ = minions.size(); j < maxJ; j++) {
+			if (minions[j] == NULL) {
+				cout << "NUUUUULLLLLL" << endl;
+			}
+			cout << minions[j] << endl;
+			minions[j]->action(etages[i]);
+		}
+		for (int j = 0, maxJ = fires.size(); j < maxJ; j++) {
+			fires[j]->action(etages[i]);
+		}
+	}
 }
 
 Batiment* Simulation::getBatiment() { return this->batiment; }
@@ -166,3 +184,68 @@ int Simulation::getNbDeadMinions() { return this->deadMinions; }
 int Simulation::getNbPanikMinions() { return this->panikMinions; }
 
 int Simulation::getNbFire() { return 0; }
+
+void Simulation::showBatiment()
+{
+	vector<Etage*> etages = this->batiment->getEtages();
+	cout << "W : Wall | w : Wood Wall | F : fire | p : pomier | P : pyromane | E : Entree | S : Sortie | C : PopCorn | X : erreur" << endl << endl;
+	for (int i = 0, max = etages.size(); i < max; i++) {
+		Etage* e = etages[i];
+		for (int x = 0; x < 10; x++) {
+			string ligne = "";
+
+			for (int y = 0; y < 10; y++) {
+				Case* c = e->getCase(x, y);
+				switch (c->getState()) {
+				case StateEnum::empty:
+					ligne += "   ";
+					break;
+				case StateEnum::wall:
+					if (isSubstateOf(c->getState(), c->getSubState())) {
+						if (c->getSubState() == SubStateEnum::wallWood) {
+							ligne += " w ";
+						}
+						else {
+							ligne += " W ";
+						}
+					}
+					else {
+						ligne += " X ";
+					}
+					break;
+				case StateEnum::flame:
+					ligne += " F ";
+					break;
+				case StateEnum::minion:
+					if (isSubstateOf(c->getState(), c->getSubState())) {
+						if (c->getSubState() == SubStateEnum::pompier) {
+							ligne += " p ";
+						}
+						else if (c->getSubState() == SubStateEnum::pyroman) {
+							ligne += " P ";
+						}
+						else {
+							ligne += " M ";
+						}
+					}
+					else {
+						ligne += " X ";
+					}
+					break;
+				case StateEnum::enterDoor:
+					ligne += " E ";
+					break;
+				case StateEnum::exitDoor:
+					ligne += " S ";
+
+					break;
+				case StateEnum::popCorn:
+					ligne += " C ";
+					break;
+				}
+			}
+			cout << ligne << endl;
+		}
+		cout << endl << "------" << endl << endl;
+	}
+}

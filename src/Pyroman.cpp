@@ -23,7 +23,7 @@ bool Pyroman::move(Etage* etage, int x, int y) {
 			break;
 		case StateEnum::flame:
 			moved = true;
-			delete emplacement->getAgent();
+			etage->kill(emplacement->getAgent(), false);
 			emplacement->setState(StateEnum::minion);
 			emplacement->setSubState(SubStateEnum::pyroman);
 			emplacement->setAgent(this);

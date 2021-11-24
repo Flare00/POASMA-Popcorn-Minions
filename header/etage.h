@@ -32,7 +32,8 @@ public:
 	void escapeMinion();
 	void burnedMinion();
 	int getRemainingMinions();
-
+	void addFire(Case * c, Fire * f);
+	void kill(Agent* Agent, bool minion);
 
 };
 

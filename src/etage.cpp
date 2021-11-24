@@ -1,5 +1,5 @@
 #include "etage.h"
-
+#include <iostream>
 Etage::Etage(int x, int y)
 {
 	this->cases = vector<vector<Case*>>(x);
@@ -38,11 +38,15 @@ Etage::~Etage()
 
 Case* Etage::getCase(int x, int y)
 {
-	return this->cases[x][y];
+	if (x >= 0 && y >= 0 && x < this->width && y < this->height) {
+		return this->cases[x][y];
+	}
+	return NULL;
 }
 
 vector<vector<Case*>> Etage::getCases()
 {
+	std::cout << this->cases[0][0] << std::endl;
 	return this->cases;
 }
 vector<vector<Case*>> Etage::getGrid()
@@ -93,4 +97,36 @@ void Etage::burnedMinion()
 int Etage::getRemainingMinions()
 {
 	return this->minions.size();
+}
+
+void Etage::addFire(Case* c, Fire* f)
+{
+	if(c->getState() == StateEnum::empty || (c->getState() == StateEnum::wall && c->getSubState() == SubStateEnum::wallWood)){
+		c->setState(StateEnum::flame);
+		c->setSubState(SubStateEnum::subEmpty);
+		c->setAgent((Agent*)f);
+		this->fires.push_back(f);
+	}
+}
+
+void Etage::kill(Agent* agent, bool minion)
+{
+	bool found = false;
+	if (minion) {
+		for (int i = 0, max = this->minions.size(); i < max && !found; i++) {
+			if ((Agent*)this->minions[i] == agent) {
+				this->minions.erase(this->minions.begin() + i);
+			}
+		}
+	}
+	else {
+		for (int i = 0, max = this->fires.size(); i < max && !found; i++) {
+			if ((Agent*)this->fires[i] == agent) {
+				this->fires.erase(this->fires.begin() + i);
+			}
+		}
+	}
+	if (found) {
+		delete agent;
+	}
 }
