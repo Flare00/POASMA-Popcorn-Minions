@@ -2,38 +2,23 @@
 #define BATIMENT_H
 
 #include <vector>
-#include "case.h"
-#include "stateEnum.h"
+#include "etage.h"
 
-class Batiment
-{
+using namespace std;
+
+
+
+class Batiment {
 private:
-	int width;
-	int height;
-	int start_nbminion, start_nbfire,start_nbPyroman,start_nbPompier;
-	int nb_exits;
-	int escapedMinion;
-	Case*** grid;
-
+	vector<Etage*> etages;
+	vector<Etage::liaisonEntreeSortie> liaison;
 public:
-	Batiment(int x, int y, int start_nbminion, int start_nbfire,int start_nbPompier,int start_nbPyroman,int nb_exits ,int nb_wall);
+	Batiment(vector<Etage *> e, vector<Etage::liaisonEntreeSortie> l);
 	~Batiment();
 
-	std::vector<Case *> getExitDoors(); //Return all exit cases;
-
-	StateEnum getState(int x, int y);
-
-	Case* getCase(int x, int y);
-	Case*** getGrid();
-	int getWidth();
-	int getHeight();
-
-	void escapeMinion();
-	void burnedMinion();
-	int getRemainingMinions();
-	void doAction();
-
-	
+	vector<Etage*> getEtages();
+	vector<Etage::liaisonEntreeSortie> getLiaisonEntreesSorties();
+	Case* getEntreeLiee(Case* sortie); //Recupere une des sortie liee a une entree 
 };
 
 #endif

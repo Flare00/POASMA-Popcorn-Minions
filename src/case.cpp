@@ -1,6 +1,5 @@
 #include "case.h"
-#include "stateEnum.h"
-#include "agent.h"
+
 #include <cstddef>
 Case::Case(int x, int y){
 	this->state = StateEnum::empty;
@@ -18,9 +17,6 @@ Case::Case(int x, int y){
 
 Case::~Case()
 {
-	if (this->agent != NULL) {
-		delete this->agent;
-	}
 }
 
 StateEnum Case::getState(){
@@ -29,6 +25,14 @@ StateEnum Case::getState(){
 
 void Case::setState(StateEnum state){
 	this->state = state;
+}
+SubStateEnum Case::getSubState()
+{
+	return this->subState;
+}
+void Case::setSubState(SubStateEnum subState)
+{
+	this->subState = subState;
 }
 Agent* Case::getAgent(){
 	return this->agent;
