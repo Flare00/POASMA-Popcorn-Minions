@@ -45,7 +45,6 @@ void Pompier::move(Etage* etage, int x, int y) {
 	}
 }
 
-
 void Pompier::action(Etage* etage) {
 
 	//this->move(etage, dx, dy);
@@ -71,8 +70,5 @@ void Pompier::action(Etage* etage) {
 		this->move(etage, this->getX() - 1, this->getY());
 		break;
 	}
-
-
-
 
 }

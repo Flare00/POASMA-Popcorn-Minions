@@ -6,7 +6,7 @@
 class Pompier: public Minion{
 	protected:
 		bool flagPompier;
-		int porteeLance = 5;
+		int porteeLance = 10;
 	public:
 		Pompier(int x,int y);
 		void eteintFeu(Case* c, Etage* etage);
