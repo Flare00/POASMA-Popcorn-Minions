@@ -4,11 +4,22 @@ using namespace std;
 Simulation::Simulation()
 {
 	//this->batiment = Simulation::generateBatiment(1, 10, 10, NBbMinionsParam(0, 5, 0), 0, 1, 1, 1, 1);
-	this->batiment = Simulation::generateBatiment(1, 10, 10, NBbMinionsParam(1, 1, 1), 1, 1, 1, 1, 1);
+	this->batiment = Simulation::generateBatiment(3, 10, 10, NBbMinionsParam(1, 0, 0), 0, 1, 1, 0, 0);
 
 }
 
 Simulation::~Simulation() {
+	vector<Etage*> etages = this->batiment->getEtages();
+	for (int i = 0, max = etages.size(); i < max; i++) {
+		vector<Minion*> minions = etages[i]->getMinions();
+		vector<Fire*> fires = etages[i]->getFires();
+		for (int j = 0, maxJ = minions.size(); j < maxJ; j++) {
+			delete minions[j];
+		}
+		for (int j = 0, maxJ = fires.size(); j < maxJ; j++) {
+			delete fires[j];
+		}
+	}
 	delete batiment;
 }
 
@@ -16,9 +27,9 @@ Batiment* Simulation::generateBatiment(int nbEtages, int largeur, int hauteur, N
 {
 	srand(clock());
 	vector<Etage*> etages;
-	vector<liaisonEntreeSortie> link;
-	vector<vector<Case*>> allEntree;
-	vector<vector<Case*>> allSortie;
+	vector<Etage::liaisonEntreeSortie> link;
+	vector<vector<Etage::EtagePorte>> allEntree;
+	vector<vector<Etage::EtagePorte>> allSortie;
 
 	for (int i = 0; i < nbEtages; i++) {
 		vector<vector<Case*>> cases;
@@ -26,7 +37,6 @@ Batiment* Simulation::generateBatiment(int nbEtages, int largeur, int hauteur, N
 		vector<Fire*> fires;
 		vector<Case*> sorties;
 		vector<Case*> entrees;
-
 		int nbStdMinions = (nbMinions.maxStandardEtage == nbMinions.minStandardEtage) ? nbMinions.maxStandardEtage : (rand()% (nbMinions.maxStandardEtage - nbMinions.minStandardEtage)) + nbMinions.minStandardEtage;
 		int nbPompMinions = (nbMinions.maxPompierEtage == nbMinions.minPompierEtage) ? nbMinions.maxPompierEtage : (rand() % (nbMinions.maxPompierEtage - nbMinions.minPompierEtage)) + nbMinions.minPompierEtage;
 		int nbPyroMinions = (nbMinions.maxPyromaneEtage == nbMinions.minPyromaneEtage) ? nbMinions.maxPyromaneEtage : (rand() % (nbMinions.maxPyromaneEtage - nbMinions.minPyromaneEtage)) + nbMinions.minPyromaneEtage;
@@ -63,7 +73,7 @@ Batiment* Simulation::generateBatiment(int nbEtages, int largeur, int hauteur, N
 					counterPomp++;
 				}
 			}
-			if (counterPyro < nbStdMinions) {
+			if (counterPyro < nbPyroMinions) {
 				int x = rand() % largeur, y = rand() % hauteur;
 				if (cases[x][y]->getState() == StateEnum::empty) {
 					Pyroman* m = new Pyroman(x, y);
@@ -121,29 +131,44 @@ Batiment* Simulation::generateBatiment(int nbEtages, int largeur, int hauteur, N
 			}
 
 		}
-		etages.push_back(new Etage(minions, fires, cases, entrees, sorties));
-		allEntree.push_back(entrees);
-		allSortie.push_back(sorties);
+		Etage* etage = new Etage(minions, fires, cases, entrees, sorties);
+		etages.push_back(etage);
+		vector<Etage::EtagePorte> etagesEntree;
+		vector<Etage::EtagePorte> etagesSortie;
+
+		for (int j = 0, maxJ = entrees.size(); j < maxJ; j++) {
+			etagesEntree.push_back(Etage::EtagePorte(etage, entrees[j]));
+		}
+		for (int j = 0, maxJ = sorties.size(); j < maxJ; j++) {
+			etagesSortie.push_back(Etage::EtagePorte(etage, sorties[j]));
+		}
+		allEntree.push_back(etagesEntree);
+		allSortie.push_back(etagesSortie);
 
 	}
 
 	for (int i = nbEtages - 1; i >= 0; i--) {
 		if (i == nbEtages - 1) {
 			for (int j = 0, max = allEntree[i].size(); j < max; j++) {
-				link.push_back(liaisonEntreeSortie(allEntree[i][j], nullptr));
+				Etage::liaisonEntreeSortie l(allEntree[i][j], true);
+				link.push_back(l);
+				l.sortie.etage->addLiaisonEntreeSortie(l);
 			}
 		}
 
 		if (i == 0) {
 			for (int j = 0, max = allSortie[i].size(); j < max; j++) {
-				link.push_back(liaisonEntreeSortie(nullptr, allSortie[i][j]));
+				Etage::liaisonEntreeSortie l( allSortie[i][j], false);
+				link.push_back(l);
 			}
 		}
 		else
 		{
 			for (int j = 0, max = allSortie[i].size(); j < max; j++) {
 				for (int k = 0, maxk = allEntree[i - 1].size(); k < maxk; k++) {
-					link.push_back(liaisonEntreeSortie(allSortie[i][j], allEntree[i - 1][k]));
+					Etage::liaisonEntreeSortie l(allEntree[i - 1][k], allSortie[i][j]);
+					link.push_back(l);
+					l.sortie.etage->addLiaisonEntreeSortie(l);
 				}
 			}
 		}
@@ -151,7 +176,7 @@ Batiment* Simulation::generateBatiment(int nbEtages, int largeur, int hauteur, N
 	return new Batiment(etages, link);
 }
 
-Batiment* Simulation::generateBatiment(vector<Etage*> etages, vector<liaisonEntreeSortie> liaison)
+Batiment* Simulation::generateBatiment(vector<Etage*> etages, vector<Etage::liaisonEntreeSortie> liaison)
 {
 	return new Batiment(etages, liaison);
 }
@@ -163,10 +188,6 @@ void Simulation::doAction()
 		vector<Minion*> minions = etages[i]->getMinions();
 		vector<Fire*> fires = etages[i]->getFires();
 		for (int j = 0, maxJ = minions.size(); j < maxJ; j++) {
-			if (minions[j] == NULL) {
-				cout << "NUUUUULLLLLL" << endl;
-			}
-			cout << minions[j] << endl;
 			minions[j]->action(etages[i]);
 		}
 		for (int j = 0, maxJ = fires.size(); j < maxJ; j++) {

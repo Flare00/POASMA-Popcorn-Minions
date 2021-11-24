@@ -49,7 +49,7 @@ private:
 	int panikMinions;
 	//Remplace le constructeur de Batiment, set manuellement les cases.
 	Batiment* generateBatiment(int nbEtages, int largeur, int hauteur, NBbMinionsParam nbMinions, int start_nbfire, int nb_exits, int nb_enters, int nb_wall, int nb_wood_wall);
-	Batiment* generateBatiment(vector<Etage*> cases, vector<liaisonEntreeSortie> liaison);
+	Batiment* generateBatiment(vector<Etage*> cases, vector<Etage::liaisonEntreeSortie> liaison);
 
 public:
 	Simulation(); //Options : JSON

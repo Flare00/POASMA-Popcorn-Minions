@@ -17,9 +17,6 @@ Case::Case(int x, int y){
 
 Case::~Case()
 {
-	if (this->agent != NULL) {
-		delete this->agent;
-	}
 }
 
 StateEnum Case::getState(){

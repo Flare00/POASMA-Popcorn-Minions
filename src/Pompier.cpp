@@ -39,15 +39,15 @@ void Pompier::move(Etage* etage, int x, int y) {
 				emplacement->setSubState(SubStateEnum::subEmpty);
 				etage->kill(emplacement->getAgent(), false);
 				currentCase->setState(StateEnum::empty);
-				emplacement->setSubState(SubStateEnum::subEmpty);
+				currentCase->setSubState(SubStateEnum::subEmpty);
 				currentCase->setAgent(NULL);
 				this->popcorn(etage);
 				break;
 			case StateEnum::exitDoor:
 				currentCase->setState(StateEnum::empty);
-				emplacement->setSubState(SubStateEnum::subEmpty);
+				currentCase->setSubState(SubStateEnum::subEmpty);
 				currentCase->setAgent(NULL);
-				etage->kill((Agent *)this, true);
+				etage->exit((Minion*)this, emplacement, SubStateEnum::pompier);
 				break;
 			}
 	}

@@ -286,6 +286,7 @@ vector<Case*> Minion::aStar(Etage* e, Case* begin, Case* end)
 bool Minion::move(Etage* etage, int x, int y) {
 	bool moved = false;
 	Case* emplacement = etage->getCase(x, y);
+	Case* tmp;
 	if (emplacement != NULL) {
 		Case* currentCase = etage->getCase(this->getX(), this->getY());
 		switch (emplacement->getState()) {
@@ -309,9 +310,15 @@ bool Minion::move(Etage* etage, int x, int y) {
 		case StateEnum::exitDoor:
 			moved = true;
 			currentCase->setState(StateEnum::empty);
+			currentCase->setSubState(SubStateEnum::subEmpty);
 			currentCase->setAgent(NULL);
+			tmp= etage->exit(this, emplacement, SubStateEnum::subEmpty);
+			if (tmp != NULL) {
+				this->setX(tmp->getX());
+				this->setY(tmp->getY());
 
-			etage->kill((Agent*)this, true);
+			}
+			//etage->kill((Agent*)this, true);
 			break;
 		}
 	}
