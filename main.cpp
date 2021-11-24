@@ -13,8 +13,8 @@
 #include <string>
 #include <unistd.h>
 #include "header/Vec3.h"
-//#include "header/Camera.h"
-//#include "header/Drawgrid.h"
+#include "header/Camera.h"
+#include "header/Drawgrid.h"
 #include "header/Simulation.h"
 
 
@@ -44,11 +44,13 @@ using namespace std;
 	}
 	return result;
 }*/
-/*chrono::high_resolution_clock::time_point last = chrono::high_resolution_clock::now();
+
+chrono::high_resolution_clock::time_point last = chrono::high_resolution_clock::now();
 
 long int nextUpdate = 0;
 
-Batiment* bat;
+Simulation* s;
+
 
 static GLint window;
 static unsigned int SCREENWIDTH = 1600;
@@ -90,11 +92,12 @@ void init() {
 void draw() {
 	long long int duration = (chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now()-last)).count();
 
-	if(duration>= 1000){
+	if(duration>= 500){
 		last = chrono::high_resolution_clock::now();
-		bat->doAction();
+		s->doAction();
+		cout<<"action"<<endl;
 	}
-	drawGrid(bat);
+	drawGrid(s);
 }
 
 
@@ -173,11 +176,11 @@ void motion(int x, int y) {
 
 void reshape(int w, int h) {
 	camera.resize(w, h);
-}*/
+}
 
 int main(int argc, char** argv) {
 	srand(time(NULL));
-	/*if (argc > 2) {
+	if (argc > 2) {
 		exit(EXIT_FAILURE);
 	}
 	glutInit(&argc, argv);
@@ -185,7 +188,7 @@ int main(int argc, char** argv) {
 	glutInitWindowSize(SCREENWIDTH, SCREENHEIGHT);
 	window = glutCreateWindow("Popcorn Minions");
 
-	bat = new Batiment(30, 30,30 , 4, 1 ,300);
+	s = new Simulation();
 
 	init();
 	glutIdleFunc(idle);
@@ -196,10 +199,10 @@ int main(int argc, char** argv) {
 	glutMouseFunc(mouse);
 	key('?', 0, 0);
 
-	glutMainLoop();
-	delete bat;*/
-	Simulation* s = new Simulation();
-	s->showBatiment();
+	
+
+	
+	/*s->showBatiment();
 	int i = 0;
 	while (i < 25){
 		sleep(1);
@@ -207,7 +210,9 @@ int main(int argc, char** argv) {
 		cout << endl << endl << "-------------------------------------" << endl << endl;
 		s->showBatiment();
 		i++;
-	}
+	}*/
+
+	glutMainLoop(); 	
 	
 	delete s;
 	return EXIT_SUCCESS;
